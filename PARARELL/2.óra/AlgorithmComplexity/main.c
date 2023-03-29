@@ -10,7 +10,7 @@ int is_unique(int arr[], int size)
         {
             if (arr[i] == arr[j])
             {
-                return 0; // van duplikátum
+                return 0;
             }
         }
     }

@@ -1,9 +1,6 @@
-#include <stdlib.h>
-#include <unistd.h>
 #include <pthread.h>
 #include <time.h>
-#include <stdio.h>
-#include "program.c"
+#include "program.h"
 
 int main()
 {

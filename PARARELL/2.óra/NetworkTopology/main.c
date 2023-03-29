@@ -28,7 +28,6 @@ int main()
         printf("%d ", dist[i]);
     }
 
-    // Histogram
     printf("\n\nHistogram of distances between nodes in %d-dimensional hypercube:\n", target_dim);
     int max_dist = target_dim;
     int hist[max_dist + 1];

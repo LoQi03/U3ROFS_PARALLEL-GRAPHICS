@@ -1,4 +1,6 @@
-#include <program.h>
+#include "program.h"
+#include <stdio.h>
+#include <time.h>
 
 void sorNumbers(int *num)
 {

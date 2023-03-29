@@ -1,2 +1,2 @@
 all:
-	gcc -c -Include/ src/program.c src/main.c -lpthread -o main.exe   
+	gcc -Iinclude/ src/program.c src/main.c -lpthread -o main.exe   
