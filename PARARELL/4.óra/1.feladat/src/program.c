@@ -39,6 +39,7 @@ void sequentialMultiply(int *nums)
 }
 int pararellMultiply(int *nums, int result, int thread_index, int start, int end)
 {
+    printf("\n");
     for (int i = start; i < end; i++)
     {
         result *= nums[i];

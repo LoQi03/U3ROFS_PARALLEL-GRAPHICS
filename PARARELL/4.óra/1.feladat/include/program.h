@@ -1,8 +1,7 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#define SIZE 12
-#define THREAD_SIZE 4;
+#define SIZE 14
 
 int *generateNumbers();
 void printNumbers(int *nums);
