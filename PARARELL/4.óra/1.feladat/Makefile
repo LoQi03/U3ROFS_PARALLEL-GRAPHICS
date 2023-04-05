@@ -1,2 +1,2 @@
 all:
-	gcc -Iinclude/ src/program.c src/main.c -fopenmp -o main.exe   
+	gcc -Iinclude/ src/program.c src/main.c -lpthread -fopenmp -o main.exe   
