@@ -19,48 +19,55 @@ void printMatrix(float matrix[N][N])
     printf("\n");
 }
 
-void swapRows(float matrix[N][N], int i, int j)
+void swap_rows(float matrix[N][N], int row1, int row2, int n)
 {
-    for (int k = 0; k < N + 1; k++)
+    float temp;
+    for (int i = 0; i < n; i++)
     {
-        float temp = matrix[i][k];
-        matrix[i][k] = matrix[j][k];
-        matrix[j][k] = temp;
+        temp = matrix[row1][i];
+        matrix[row1][i] = matrix[row2][i];
+        matrix[row2][i] = temp;
     }
 }
 
-void gaussianElimination(float matrix[N][N])
+void pivot(float matrix[N][N])
 {
+    int max_index;
+    float max_value, abs_value;
     for (int i = 0; i < N; i++)
     {
-        // Pivotálás
-        int maxRow = i;
+        max_index = i;
+        max_value = matrix[i][i];
+        // find the row with the maximum absolute value
         for (int j = i + 1; j < N; j++)
         {
-            if (matrix[j][i] > matrix[maxRow][i])
+            abs_value = fabs(matrix[j][i]);
+            if (abs_value > max_value)
             {
-                maxRow = j;
+                max_index = j;
+                max_value = abs_value;
             }
         }
-        if (i != maxRow)
-        {
-            swapRows(matrix, i, maxRow);
-        }
 
-        // Gauss-elimináció
+        // swap the current row with the row with the maximum absolute value
+        swap_rows(matrix, i, max_index, N);
+
+        // zero out the elements below the current pivot element
         for (int j = i + 1; j < N; j++)
         {
-            float ratio = matrix[j][i] / matrix[i][i];
-            for (int k = i; k < N + 1; k++)
+            float factor = matrix[j][i] / matrix[i][i];
+            for (int k = i; k < N; k++)
             {
-                matrix[j][k] -= ratio * matrix[i][k];
+                matrix[j][k] = matrix[j][k] - factor * matrix[i][k];
             }
         }
     }
 }
 void normalize(float matrix[N][N])
 {
+
     float det = matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1] * matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[1][0] * matrix[2][1] - matrix[0][2] * matrix[1][1] * matrix[2][0] - matrix[0][0] * matrix[1][2] * matrix[2][1] - matrix[0][1] * matrix[1][0] * matrix[2][2];
+    printf("Determinans: %f\n", det);
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -68,12 +75,4 @@ void normalize(float matrix[N][N])
             matrix[i][j] /= det;
         }
     }
-}
-void gaussianEliminationThread(void *matrix)
-{
-    gaussianElimination((float(*)[N])matrix);
-}
-void normalizeThread(void *matrix)
-{
-    normalize((float(*)[N])matrix);
 }

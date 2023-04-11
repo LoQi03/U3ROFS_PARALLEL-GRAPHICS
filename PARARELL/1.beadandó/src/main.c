@@ -21,7 +21,7 @@ int main()
 
     pthread_t thread_Gauss, thread_Norm;
     clock_t start_Gauss = clock();
-    pthread_create(&thread_Gauss, NULL, gaussianEliminationThread, (void *)matrixGauss);
+    pthread_create(&thread_Gauss, NULL, pivot, (void *)matrixGauss);
     clock_t start_Norm = clock();
     pthread_create(&thread_Norm, NULL, normalize, (void *)matrixNorm);
 
