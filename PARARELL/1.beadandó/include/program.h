@@ -1,11 +1,10 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#define SIZE 1000
-void *generateNumbers(void *vargp);
-void sorNumbers(int *num);
-void printNumbers(int *num);
-void *calcAvg(void *int_num);
-void *calcMedian(void *int_num);
+#define N 3
 
+void printMatrix(float matrix[N][N + 1]);
+void swapRows(float matrix[N][N + 1], int i, int j);
+void gaussianElimination(float matrix[N][N + 1]);
+void normalize(float matrix[N][N + 1]);
 #endif
