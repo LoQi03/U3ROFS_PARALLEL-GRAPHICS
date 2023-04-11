@@ -20,15 +20,19 @@ int main()
     printMatrix(matrixGauss);
 
     pthread_t thread_Gauss, thread_Norm;
+    clock_t start_Gauss = clock();
     pthread_create(&thread_Gauss, NULL, gaussianEliminationThread, (void *)matrixGauss);
+    clock_t start_Norm = clock();
     pthread_create(&thread_Norm, NULL, normalize, (void *)matrixNorm);
 
     pthread_join(thread_Norm, NULL);
-    printf("Normalizalas utan:\n");
+    double end_Norm = (double)(clock() - start_Norm) / CLOCKS_PER_SEC;
+    printf("Normalizalas utan:(%lf)\n", end_Norm);
     printMatrix(matrixNorm);
 
     pthread_join(thread_Gauss, NULL);
-    printf("Pivotalas es Gauss-eliminacio utan:\n");
+    double end_Gauss = (double)(clock() - start_Gauss) / CLOCKS_PER_SEC;
+    printf("Gauss-eliminacio utan:(%lf)\n", end_Gauss);
     printMatrix(matrixGauss);
     return 0;
 }
