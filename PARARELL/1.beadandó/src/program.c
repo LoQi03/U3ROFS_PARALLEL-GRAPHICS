@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <math.h>
+#include <time.h>
+
 #define N 3
 
 void printMatrix(float matrix[N][N])
@@ -32,6 +34,7 @@ void swap_rows(float matrix[N][N], int row1, int row2, int n)
 
 void pivot(float matrix[N][N])
 {
+    clock_t start = clock();
     int max_index;
     float max_value, abs_value;
     for (int i = 0; i < N; i++)
@@ -62,10 +65,14 @@ void pivot(float matrix[N][N])
             }
         }
     }
+
+    double end = (double)(clock() - start) / CLOCKS_PER_SEC;
+    printf("Pivotalas utan:(%lf)\n", end);
+    printMatrix(matrix);
 }
 void normalize(float matrix[N][N])
 {
-
+    clock_t start = clock();
     float det = matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1] * matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[1][0] * matrix[2][1] - matrix[0][2] * matrix[1][1] * matrix[2][0] - matrix[0][0] * matrix[1][2] * matrix[2][1] - matrix[0][1] * matrix[1][0] * matrix[2][2];
     printf("Determinans: %f\n", det);
     for (int i = 0; i < N; i++)
@@ -75,4 +82,7 @@ void normalize(float matrix[N][N])
             matrix[i][j] /= det;
         }
     }
+    double end = (double)(clock() - start) / CLOCKS_PER_SEC;
+    printf("Normalizalas utan:(%lf)\n", end);
+    printMatrix(matrix);
 }
