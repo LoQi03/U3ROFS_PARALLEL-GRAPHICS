@@ -1,24 +1,30 @@
-
 #include <stdio.h>
+#include <stdlib.h>
 #include "program.h"
-
-#include <stdio.h>
-#include <math.h>
-
-int main()
+#include <time.h>
+int main(int argc, char *argv[])
 {
-    double x = 0.5; // pont, ahol a függvényeket kiértékeljük
-    int n = 10;     // sorfejtés pontossága
+    if (argc != 3)
+    {
+        printf("Hibas bemenet!\n");
+        return 1;
+    }
+    double x = strtod(argv[1], NULL); // pont, ahol a függvényeket kiértékeljük
+    int n = atoi(argv[2]);            // sorfejtés pontossága
+    double result_cos, result_sin, result_exp;
+    clock_t start = clock();
+    printf("x = %f, n = %d\n", x, n);
+
 #pragma omp parallel
     {
 #pragma omp sections
         {
 #pragma omp section
-            printf("cos(%f) = %f\n", x, cos_taylor(x, n));
+            cos_taylor(x, n);
 #pragma omp section
-            printf("sin(%f) = %f\n", x, sin_taylor(x, n));
+            sin_taylor(x, n);
 #pragma omp section
-            printf("exp(%f) = %f\n", x, exp_taylor(x, n));
+            exp_taylor(x, n);
         }
     }
     return 0;

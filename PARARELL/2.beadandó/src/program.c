@@ -2,41 +2,58 @@
 #include <stdlib.h>
 #include "program.h"
 #include <math.h>
+#include <time.h>
+double factorial(int n)
+{
+    double result = 1.0;
+    for (int i = 2; i <= n; i++)
+    {
+        result *= i;
+    }
+    return result;
+}
 
 double cos_taylor(double x, int n)
 {
+    clock_t start = clock();
     double result = 1.0;
-    int i;
 #pragma omp parallel for reduction(+ \
                                    : result)
-    for (i = 1; i <= n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        result += pow(-1, i) * pow(x, 2 * i) / tgamma(2 * i + 1);
+        double term = pow(-1, i) * pow(x, 2 * i) / factorial(2 * i);
+        result += term;
     }
+    printf("cos(%f) = %lf\t ido:%lf\n", x, result, (double)(clock() - start) / CLOCKS_PER_SEC);
     return result;
 }
 
 double sin_taylor(double x, int n)
 {
+    clock_t start = clock();
     double result = x;
-    int i;
 #pragma omp parallel for reduction(+ \
                                    : result)
-    for (i = 1; i <= n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        result += pow(-1, i) * pow(x, 2 * i + 1) / tgamma(2 * i + 2);
+        double term = pow(-1, i) * pow(x, 2 * i + 1) / factorial(2 * i + 1);
+        result += term;
     }
+    printf("sin(%f) = %lf\t ido:%lf\n", x, result, (double)(clock() - start) / CLOCKS_PER_SEC);
     return result;
 }
+
 double exp_taylor(double x, int n)
 {
+    clock_t start = clock();
     double result = 1.0;
-    int i;
 #pragma omp parallel for reduction(+ \
                                    : result)
-    for (i = 1; i <= n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        result += pow(x, i) / tgamma(i + 1);
+        double term = pow(x, i) / factorial(i);
+        result += term;
     }
+    printf("exp(%f) = %lf\t ido:%lf\n", x, result, (double)(clock() - start) / CLOCKS_PER_SEC);
     return result;
 }
