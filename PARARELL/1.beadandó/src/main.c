@@ -4,33 +4,37 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
-int main()
+int main(int argc, char *argv[])
 {
-    double matrixGauss[N][N];
-    double matrixNorm[N][N];
-    generateMatrix(matrixGauss);
+    double matrix[N][N];
+    double matrixMultiply[N][N];
+    double matrixDivision[N][N];
+    double matrixSqrt[N][N];
+    double matrixPow[N][N];
+    generateMatrix(matrix);
 
-    for (size_t i = 0; i < N; i++)
+    for (int i = 0; i < N; i++)
     {
-        for (size_t j = 0; j < N; j++)
+        for (int j = 0; j < N; j++)
         {
-            matrixNorm[i][j] = matrixGauss[i][j];
+            matrixMultiply[i][j] = matrix[i][j];
+            matrixDivision[i][j] = matrix[i][j];
+            matrixSqrt[i][j] = matrix[i][j];
+            matrixPow[i][j] = matrix[i][j];
         }
     }
 
     printf("Kezdeti matrix:\n");
-    printMatrix(matrixGauss);
+    printMatrix(matrix);
 
-    clock_t start = clock();
-    pthread_t thread_Gauss, thread_Norm;
-    pthread_create(&thread_Gauss, NULL, pivot, (void *)matrixGauss);
-    pthread_create(&thread_Norm, NULL, normalize, (void *)matrixNorm);
-    pthread_join(thread_Gauss, NULL);
-    printf("Gauss utani matrix(%lf):\n", (double)(clock() - start) / CLOCKS_PER_SEC);
-    printMatrix(matrixGauss);
-    pthread_join(thread_Norm, NULL);
-    printf("Normalas utani matrix(%lf):\n", (double)(clock() - start) / CLOCKS_PER_SEC);
-    printMatrix(matrixNorm);
-
+    pthread_t thread_Multiply, thread_Division, thread_Sqrt, thread_Pow;
+    pthread_create(&thread_Multiply, NULL, multiply_matrix, (void *)matrixMultiply);
+    pthread_create(&thread_Division, NULL, division_matrix, (void *)matrixDivision);
+    pthread_create(&thread_Sqrt, NULL, sqrt_matrix, (void *)matrixSqrt);
+    pthread_create(&thread_Pow, NULL, pow_matrix, (void *)matrixPow);
+    pthread_join(thread_Multiply, NULL);
+    pthread_join(thread_Division, NULL);
+    pthread_join(thread_Sqrt, NULL);
+    pthread_join(thread_Pow, NULL);
     return 0;
 }
