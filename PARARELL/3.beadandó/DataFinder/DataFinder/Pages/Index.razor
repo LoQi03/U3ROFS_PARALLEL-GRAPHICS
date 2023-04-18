@@ -6,8 +6,15 @@
 <div>
     <div>
         <h3>Search</h3>
-        <input type="text" @bind="searchText" />
-        <button type="button" class="btn btn-primary">Search</button>
+        <div>
+            <input type="text" class="form-control" id="text" aria-describedby="text" placeholder="Some text" @bind="searchText">
+            <button type="button" class="btn btn-primary my-2" @onclick="Search">Search</button>
+            @if(SearchedDatas is not null)
+            {
+                <button type="button" class="btn btn-danger mx-2" @onclick="Reset">Reset</button>
+            }
+        </div>
+        
     </div>
    <table class="table">
   <thead>
@@ -20,9 +27,22 @@
     </tr>
   </thead>
   <tbody>
-            @if (searchText != "")
+            @if (SearchedDatas is null)
             {
                 @foreach (var item in DataList)
+                {
+                    <tr>
+                        <th scope="row">@item.Id</th>
+                        <td>@item.Age</td>
+                        <td>@item.Name</td>
+                        <td>@item.Email</td>
+                        <td>@item.City</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                @foreach (var item in SearchedDatas)
                 {
                     <tr>
                         <th scope="row">@item.Id</th>
@@ -38,6 +58,7 @@
 </div>
 @code{
     private string searchText = "";
+    private List<DataModel>? SearchedDatas = null;
     private static Random _random = new Random();
     private static string GetCity()
     {
@@ -59,27 +80,52 @@
 
     private async void SortById()
     {
+        if(SearchedDatas is null)
         DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Id"); });
+        else
+        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Id"); });
         StateHasChanged();
     }
     private async void SortByAge()
     {
+        if(SearchedDatas is null)
         DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Age"); });
+        else
+        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Age"); });
         StateHasChanged();
     }
     private async void SortByName()
     {
+        if(SearchedDatas is null)
         DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Name"); });
+        else
+        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Name"); });
         StateHasChanged();
     }
     private async void SortByEmail()
     {
+        if(SearchedDatas is null)
         DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Email"); });
+        else
+        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Email"); });
         StateHasChanged();
     }
     private async void SortByCity()
     {
+        if(SearchedDatas is null)
         DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "City"); });
+        else
+        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "City"); });
+        StateHasChanged();
+    }
+    private async void Search()
+    {
+        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSearch(DataList, searchText); });
+        StateHasChanged();
+    }
+    private void Reset()
+    {
+        SearchedDatas = null;
         StateHasChanged();
     }
 }
