@@ -4,74 +4,38 @@
 #include <time.h>
 #include "program.h"
 
-void printMatrix(double matrix[N][N])
+void quickSort(int *arr, int left, int right)
 {
-    for (int i = 0; i < N; i++)
+    int i = left, j = right;
+    int temp;
+    int pivot = arr[(left + right) / 2];
+
+    while (i <= j)
     {
-        for (int j = 0; j < N; j++)
+        while (arr[i] < pivot)
+            i++;
+        while (arr[j] > pivot)
+            j--;
+        if (i <= j)
         {
-            printf("%lf ", matrix[i][j]);
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
         }
-        printf("\n");
     }
+
+    if (left < j)
+        quickSort(arr, left, j);
+    if (i < right)
+        quickSort(arr, i, right);
 }
-void generateMatrix(double matrix[N][N])
+void *parallel_quickSort(void *arg)
 {
-    clock_t start = clock();
-    srand(time(NULL));
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            matrix[i][j] = (double)rand() / RAND_MAX;
-        }
-    }
-}
-void multiply_matrix(double matrix[N][N])
-{
-    clock_t start = clock();
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            matrix[i][j] *= CONSTANT;
-        }
-    }
-    printf("Szorzas(%lf)\n", (double)(clock() - start) / CLOCKS_PER_SEC);
-}
-void division_matrix(double matrix[N][N])
-{
-    clock_t start = clock();
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            matrix[i][j] /= CONSTANT;
-        }
-    }
-    printf("Osztas(%lf)\n", (double)(clock() - start) / CLOCKS_PER_SEC);
-}
-void pow_matrix(double matrix[N][N])
-{
-    clock_t start = clock();
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            matrix[i][j] = pow(matrix[i][j], CONSTANT);
-        }
-    }
-    printf("Hatvanyozas(%lf)\n", (double)(clock() - start) / CLOCKS_PER_SEC);
-}
-void sqrt_matrix(double matrix[N][N])
-{
-    clock_t start = clock();
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            matrix[i][j] = pow(matrix[i][j], 1.0f / CONSTANT);
-        }
-    }
-    printf("Gyok(%lf)\n", (double)(clock() - start) / CLOCKS_PER_SEC);
+    int *sub_arr = arg;
+    int left = sub_arr[0];
+    int right = sub_arr[1];
+    quickSort(arr, left, right);
+    pthread_exit(NULL);
 }

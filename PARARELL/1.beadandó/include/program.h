@@ -1,13 +1,10 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#define N 100
-#define CONSTANT 2
+#define N 1000
+int arr[N];
 
-void printMatrix(double matrix[N][N]);
-void generateMatrix(double matrix[N][N]);
-void multiply_matrix(double matrix[N][N]);
-void division_matrix(double matrix[N][N]);
-void pow_matrix(double matrix[N][N]);
-void sqrt_matrix(double matrix[N][N]);
+void quickSort(int *arr, int left, int right);
+void *parallel_quickSort(void *arg);
+
 #endif

@@ -1,0 +1,85 @@
+﻿@page "/"
+@using DataFinder.Extensions;
+@using DataFinder.Model;
+
+<PageTitle>Data Finder</PageTitle>
+<div>
+    <div>
+        <h3>Search</h3>
+        <input type="text" @bind="searchText" />
+        <button type="button" class="btn btn-primary">Search</button>
+    </div>
+   <table class="table">
+  <thead>
+    <tr>
+        <th style="cursor: pointer;" scope="col" @onclick="SortById">Id</th>
+        <th style="cursor: pointer;" scope="col" @onclick="SortByAge">Age</th>
+        <th style="cursor: pointer;" scope="col" @onclick="SortByName">Name</th>
+        <th style="cursor: pointer;" scope="col" @onclick="SortByEmail">Email</th>
+        <th style="cursor: pointer;" scope="col" @onclick="SortByCity">City</th>
+    </tr>
+  </thead>
+  <tbody>
+            @if (searchText != "")
+            {
+                @foreach (var item in DataList)
+                {
+                    <tr>
+                        <th scope="row">@item.Id</th>
+                        <td>@item.Age</td>
+                        <td>@item.Name</td>
+                        <td>@item.Email</td>
+                        <td>@item.City</td>
+                    </tr>
+                }
+            }
+   </tbody>
+    </table>
+</div>
+@code{
+    private string searchText = "";
+    private static Random _random = new Random();
+    private static string GetCity()
+    {
+        int city = _random.Next(2);
+
+        if (city % 2 == 0)
+            return "Miskolc";
+        else
+            return "Budapest";
+    }
+    private List<DataModel> DataList = Enumerable.Range(0, 1000).Select(x => new DataModel
+            {
+                Age = _random.Next(1, 100),
+                Name = Guid.NewGuid().ToString().Split('-').First(),
+                City = GetCity(),
+                Id = Guid.NewGuid(),
+                Email = Guid.NewGuid().ToString().Split('-').First()+"@example.com"
+            }).ToList();
+
+    private async void SortById()
+    {
+        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Id"); });
+        StateHasChanged();
+    }
+    private async void SortByAge()
+    {
+        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Age"); });
+        StateHasChanged();
+    }
+    private async void SortByName()
+    {
+        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Name"); });
+        StateHasChanged();
+    }
+    private async void SortByEmail()
+    {
+        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Email"); });
+        StateHasChanged();
+    }
+    private async void SortByCity()
+    {
+        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "City"); });
+        StateHasChanged();
+    }
+}

@@ -1,40 +1,46 @@
-#include "program.h"
-#include <stddef.h>
-#include <pthread.h>
 #include <stdio.h>
-#include <time.h>
-#include <unistd.h>
-int main(int argc, char *argv[])
+#include <stdlib.h>
+#include <pthread.h>
+#include "program.h"
+int main()
 {
-    double matrix[N][N];
-    double matrixMultiply[N][N];
-    double matrixDivision[N][N];
-    double matrixSqrt[N][N];
-    double matrixPow[N][N];
-    generateMatrix(matrix);
-
+    int num_threads, i;
+    pthread_t *threads;
+    int *args;
+    srand(time(NULL));
     for (int i = 0; i < N; i++)
     {
-        for (int j = 0; j < N; j++)
-        {
-            matrixMultiply[i][j] = matrix[i][j];
-            matrixDivision[i][j] = matrix[i][j];
-            matrixSqrt[i][j] = matrix[i][j];
-            matrixPow[i][j] = matrix[i][j];
-        }
+        arr[i] = rand();
+        printf("%d\n", arr[i]);
     }
 
-    printf("Kezdeti matrix:\n");
-    printMatrix(matrix);
+    printf("Add meg a szalak szamat: ");
+    scanf("%d", &num_threads);
 
-    pthread_t thread_Multiply, thread_Division, thread_Sqrt, thread_Pow;
-    pthread_create(&thread_Multiply, NULL, multiply_matrix, (void *)matrixMultiply);
-    pthread_create(&thread_Division, NULL, division_matrix, (void *)matrixDivision);
-    pthread_create(&thread_Sqrt, NULL, sqrt_matrix, (void *)matrixSqrt);
-    pthread_create(&thread_Pow, NULL, pow_matrix, (void *)matrixPow);
-    pthread_join(thread_Multiply, NULL);
-    pthread_join(thread_Division, NULL);
-    pthread_join(thread_Sqrt, NULL);
-    pthread_join(thread_Pow, NULL);
+    threads = (pthread_t *)malloc(num_threads * sizeof(pthread_t));
+    args = (int *)malloc(num_threads * 2 * sizeof(int));
+    int chunk_size = N / num_threads;
+    int left, right;
+
+    for (i = 0; i < num_threads; i++)
+    {
+        left = i * chunk_size;
+        right = (i == num_threads - 1) ? N - 1 : (left + chunk_size - 1);
+        args[2 * i] = left;
+        args[2 * i + 1] = right;
+        pthread_create(&threads[i], NULL, parallel_quickSort, &args[2 * i]);
+    }
+    for (i = 0; i < num_threads; i++)
+    {
+        pthread_join(threads[i], NULL);
+    }
+    quickSort(arr, 0, N - 1);
+    printf("A rendezett sorozat: ");
+    for (int i = 0; i < N; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
     return 0;
 }
