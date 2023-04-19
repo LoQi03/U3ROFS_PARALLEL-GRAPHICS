@@ -17,7 +17,7 @@ void init_app(App *app, int width, int height)
     }
 
     app->window = SDL_CreateWindow(
-        "Homework",
+        "Cube!",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         width, height,
         SDL_WINDOW_OPENGL);
@@ -122,16 +122,37 @@ void handle_app_events(App *app)
                 app->is_running = false;
                 break;
             case SDL_SCANCODE_W:
+                if (is_camera_locked(&(app->scene)) == true)
+                    break;
                 set_camera_speed(&(app->camera), 1);
                 break;
             case SDL_SCANCODE_S:
-                set_camera_speed(&(app->camera), -1);
+
+                if (is_camera_locked(&(app->scene)) == true)
+                    break;
+                else
+                    set_camera_speed(&(app->camera), -1);
                 break;
             case SDL_SCANCODE_A:
-                set_camera_side_speed(&(app->camera), 1);
+                if (is_camera_locked(&(app->scene)) == true)
+                    break;
+                else
+                    set_camera_side_speed(&(app->camera), 1);
                 break;
             case SDL_SCANCODE_D:
-                set_camera_side_speed(&(app->camera), -1);
+                if (is_camera_locked(&(app->scene)) == true)
+                    break;
+                else
+                    set_camera_side_speed(&(app->camera), -1);
+                break;
+            case SDL_SCANCODE_J:
+                set_left_dino(&(app->scene));
+                break;
+            case SDL_SCANCODE_K:
+                set_right_dino(&(app->scene));
+                break;
+            case SDL_SCANCODE_L:
+                togle_camera(&(app->scene));
                 break;
             default:
                 break;
@@ -142,11 +163,24 @@ void handle_app_events(App *app)
             {
             case SDL_SCANCODE_W:
             case SDL_SCANCODE_S:
-                set_camera_speed(&(app->camera), 0);
+
+                if (is_camera_locked(&(app->scene)) == true)
+                    break;
+                else
+                    set_camera_speed(&(app->camera), 0);
                 break;
             case SDL_SCANCODE_A:
             case SDL_SCANCODE_D:
-                set_camera_side_speed(&(app->camera), 0);
+                if (is_camera_locked(&(app->scene)) == true)
+                    break;
+                else
+                    set_camera_side_speed(&(app->camera), 0);
+                break;
+            case SDL_SCANCODE_J:
+                set_center_dino(&(app->scene));
+                break;
+            case SDL_SCANCODE_K:
+                set_center_dino(&(app->scene));
                 break;
             default:
                 break;
@@ -159,7 +193,10 @@ void handle_app_events(App *app)
             SDL_GetMouseState(&x, &y);
             if (is_mouse_down)
             {
-                rotate_camera(&(app->camera), mouse_x - x, mouse_y - y);
+                if (is_camera_locked(&(app->scene)) == true)
+                    break;
+                else
+                    rotate_camera(&(app->camera), mouse_x - x, mouse_y - y);
             }
             mouse_x = x;
             mouse_y = y;
@@ -185,7 +222,17 @@ void update_app(App *app)
     elapsed_time = current_time - app->uptime;
     app->uptime = current_time;
 
-    update_camera(&(app->camera), elapsed_time);
+    if (is_camera_locked(&(app->scene)))
+    {
+        float *pos = get_camera_position(&(app->scene));
+        set_camera_position(&(app->camera), pos[0], pos[1], pos[2]);
+        update_camera(&(app->camera), current_time);
+    }
+    else
+    {
+        update_camera(&(app->camera), elapsed_time);
+    }
+
     update_scene(&(app->scene));
 }
 
