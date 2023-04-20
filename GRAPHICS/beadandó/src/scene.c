@@ -5,18 +5,23 @@
 #include <obj/transform.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <time.h>
+#include <omp.h>
 
 double current_time = 0.0;
 double last_time = 0.0;
 float cactus[50];
+int raptor_pos = 0;
+float cactus_pos[60];
 void init_scene(Scene *scene)
 {
+    srand(time(NULL));
     // raptor
     load_model(&(scene->raptor), "assets/models/raptor.obj");
     scene->raptor_texture_id = load_texture("assets/textures/raptor.png");
     scene->raptor_x = 1.20;
-    scene->raptor_y = 1.0;
+    scene->raptor_y = 0.0;
     scene->raptor_z = 0.0;
     scene->raptor_rotation = 0.0;
 
@@ -28,14 +33,19 @@ void init_scene(Scene *scene)
 
     // cactus
     load_model(&(scene->cactus), "assets/models/cactus.obj");
-    scene->cactus_texture_id = load_texture("assets/textures/cactus.png");
-
-    srand(time(NULL));
-    for (int i = 0; i < 50; i++)
+    scene->cactus_texture_id = load_texture("assets/textures/cactus.jpg");
+    for (int i = 0; i < 60; i++)
     {
-        cactus[i] = ((float)rand() / (float)(RAND_MAX)) * 3.0f;
+        int r = rand() % ((3 + 1) - 1) + 1;
+        if (r == 1)
+            cactus_pos[i] = 2.00;
+        else if (r == 2)
+            cactus_pos[i] = 4.90;
+        else if (r == 3)
+            cactus_pos[i] = 7.20;
+        else
+            cactus_pos[i] = 2.00;
     }
-
     // material
     scene->material.ambient.red = 0.0;
     scene->material.ambient.green = 0.0;
@@ -63,7 +73,7 @@ void set_lighting(float light_y)
     float ambient_light[] = {1.0f, 1.0f, 1.0f, 1.0f};
     float diffuse_light[] = {1.0f, 1.0f, 1.0, 1.0f};
     float specular_light[] = {0.0f, 0.0f, 0.0f, 1.0f};
-    float position[] = {0.0f, 50.0f, 10.0f, 1.0f};
+    float position[] = {0.0f, 100.0f, 10.0f, 1.0f};
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
@@ -98,8 +108,11 @@ void set_material(const Material *material)
 void update_scene(Scene *scene)
 {
     current_time = (double)SDL_GetTicks() / 1000;
-    scene->raptor_y += 1.0 * (current_time - last_time);
-    scene->light_y = scene->raptor_y + 1.0;
+    scene->raptor_y += 1.5 * (current_time - last_time);
+    if (scene->raptor_y > 40.0)
+    {
+        scene->raptor_y = 1.0;
+    }
     last_time = current_time;
 }
 void render_scene(const Scene *scene)
@@ -107,72 +120,11 @@ void render_scene(const Scene *scene)
     update_scene(scene);
     set_lighting(scene->light_y);
     set_material(&(scene->material));
+    draw_raptor(scene);
 
-    // draw raptor
-    glEnable(GL_TEXTURE_2D);
-    glPushMatrix();
-    glBindTexture(GL_TEXTURE_2D, scene->raptor_texture_id);
-    glScalef(0.5, 0.5, 0.5);
-    draw_model(&(scene->raptor), scene->raptor_x, scene->raptor_y, scene->raptor_z);
-    glPopMatrix();
-    glDisable(GL_TEXTURE_2D);
+    draw_desert(scene);
 
-    // draw field
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, scene->road_texture_id);
-    glBegin(GL_QUADS);
-    for (int i = 0; i < 100; i++)
-    {
-        glEnable(GL_TEXTURE_2D);
-        glTexCoord2f(0, 1);
-        glVertex3f(0, i, 0);
-
-        glTexCoord2f(1, 1);
-        glVertex3f(1, i, 0);
-
-        glTexCoord2f(1, 0);
-        glVertex3f(1, i + 1, 0);
-
-        glTexCoord2f(0, 0);
-        glVertex3f(0, i + 1, 0);
-        glDisable(GL_TEXTURE_2D);
-    }
-    glEnd();
-    // draw desert
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, scene->desert_texture_id);
-    glBegin(GL_QUADS);
-    for (int i = 0; i < 100; i++)
-    {
-        for (int j = -5; j <= 5; j++)
-        {
-            glEnable(GL_TEXTURE_2D);
-            glTexCoord2f(0, 1);
-            glVertex3f(j, i, 0);
-
-            glTexCoord2f(1, 1);
-            glVertex3f(j + 1, i, 0);
-
-            glTexCoord2f(1, 0);
-            glVertex3f(j + 1, i + 1, 0);
-
-            glTexCoord2f(0, 0);
-            glVertex3f(j, i + 1, 0);
-            glDisable(GL_TEXTURE_2D);
-        }
-    }
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-    // draw cactus
-    glBindTexture(GL_TEXTURE_2D, GL_DIFFUSE);
-    glEnable(GL_TEXTURE_2D);
-    glPushMatrix();
-    glScalef(0.2, 0.2, 0.2);
-    glRotatef(90, 1, 0, 0);
-    draw_model(&(scene->cactus), 0.5f, 1.0f, -0.5f);
-    glColor3f(0.0, 1.0, 0.0);
-    glPopMatrix();
-    glDisable(GL_TEXTURE_2D);
+    draw_cactus(scene);
 }
 void set_left_dino(Scene *scene)
 {
@@ -205,6 +157,79 @@ float *get_camera_position(const Scene *scene)
     camera_position[1] = scene->raptor_y * 0.5 - 1;
     camera_position[2] = scene->raptor_z + 0.8;
     return camera_position;
+}
+void draw_cactus(const Scene *scene)
+{
+    srand(time(NULL));
+    for (int i = 30; i < 210; i = i + 15)
+    {
+        int index = i / 15;
+        glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, scene->cactus_texture_id);
+        glScalef(0.1, 0.1, 0.1);
+        glRotatef(90, 1, 0, 0);
+        float y = i * -1;
+        printf("y: %f raptor:%f\n", y, scene->raptor_y);
+        if (i > (int)scene->raptor_y)
+        {
+            draw_model(&(scene->cactus), cactus_pos[index], 0.0f, y);
+            draw_model(&(scene->cactus), cactus_pos[index + 1], 0.0f, y);
+        }
+        glPopMatrix();
+    }
+}
+void draw_raptor(const Scene *scene)
+{
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D, scene->raptor_texture_id);
+    glScalef(0.5, 0.5, 0.5);
+    draw_model(&(scene->raptor), scene->raptor_x, scene->raptor_y, scene->raptor_z);
+    glPopMatrix();
+}
+void draw_road(const Scene *scene)
+{
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D, scene->road_texture_id);
+    for (int i = 0; i < 20; i++)
+    {
+        glTexCoord2f(0, 1);
+        glVertex3f(0, i, 0);
+
+        glTexCoord2f(1, 1);
+        glVertex3f(1, i, 0);
+
+        glTexCoord2f(1, 0);
+        glVertex3f(1, i + 1, 0);
+
+        glTexCoord2f(0, 0);
+        glVertex3f(0, i + 1, 0);
+    }
+    glPopMatrix();
+}
+void draw_desert(const Scene *scene)
+{
+    glBindTexture(GL_TEXTURE_2D, scene->desert_texture_id);
+    glBegin(GL_QUADS);
+    glPushMatrix();
+    for (int i = -1; i < 21; i++)
+    {
+        for (int j = -2; j <= 2; j++)
+        {
+            glTexCoord2f(0, 1);
+            glVertex3f(j, i, 0);
+
+            glTexCoord2f(1, 1);
+            glVertex3f(j + 1, i, 0);
+
+            glTexCoord2f(1, 0);
+            glVertex3f(j + 1, i + 1, 0);
+
+            glTexCoord2f(0, 0);
+            glVertex3f(j, i + 1, 0);
+        }
+    }
+    glPopMatrix();
+    glEnd();
 }
 void draw_origin()
 {

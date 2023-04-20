@@ -14,6 +14,10 @@ typedef struct Scene
     float raptor_y;
     float raptor_z;
     float raptor_rotation;
+
+    float cactus_distance_x[50];
+    float cactus_distance_y[50];
+
     float light_y;
     GLuint raptor_texture_id;
     // road
@@ -45,8 +49,11 @@ void update_scene(Scene *scene);
 void render_scene(const Scene *scene);
 
 /**
- * Draw the origin of the world coordinate system.
+ * Draw objects.
  */
-void draw_origin();
+void draw_road(const Scene *scene);
+void draw_desert(const Scene *scene);
+void draw_cactus(const Scene *scene);
+void draw_raptor(const Scene *scene);
 
 #endif /* SCENE_H */
