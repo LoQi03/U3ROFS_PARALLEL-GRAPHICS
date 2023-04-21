@@ -16,7 +16,6 @@ int raptor_pos = 0;
 float cactus_pos[60];
 void init_scene(Scene *scene)
 {
-    srand(time(NULL));
     // raptor
     load_model(&(scene->raptor), "assets/models/raptor.obj");
     scene->raptor_texture_id = load_texture("assets/textures/raptor.png");
@@ -34,18 +33,7 @@ void init_scene(Scene *scene)
     // cactus
     load_model(&(scene->cactus), "assets/models/cactus.obj");
     scene->cactus_texture_id = load_texture("assets/textures/cactus.jpg");
-    for (int i = 0; i < 60; i++)
-    {
-        int r = rand() % ((3 + 1) - 1) + 1;
-        if (r == 1)
-            cactus_pos[i] = 2.00;
-        else if (r == 2)
-            cactus_pos[i] = 4.90;
-        else if (r == 3)
-            cactus_pos[i] = 7.20;
-        else
-            cactus_pos[i] = 2.00;
-    }
+    generate_random_cactus(scene);
     // material
     scene->material.ambient.red = 0.0;
     scene->material.ambient.green = 0.0;
@@ -109,21 +97,39 @@ void update_scene(Scene *scene)
 {
     current_time = (double)SDL_GetTicks() / 1000;
     scene->raptor_y += 1.5 * (current_time - last_time);
-    if (scene->raptor_y > 40.0)
+
+    if (scene->raptor_y > 35.0)
     {
+        generate_random_cactus(scene);
         scene->raptor_y = 1.0;
     }
     last_time = current_time;
+}
+void generate_random_cactus(Scene *scene)
+{
+    srand(time(NULL));
+    for (int i = 0; i < 60; i++)
+    {
+        int r = rand() % ((3 + 1) - 1) + 1;
+        if (r == 1)
+            cactus_pos[i] = 2.00;
+        else if (r == 2)
+            cactus_pos[i] = 4.90;
+        else if (r == 3)
+            cactus_pos[i] = 7.20;
+        else
+            cactus_pos[i] = 2.00;
+    }
 }
 void render_scene(const Scene *scene)
 {
     update_scene(scene);
     set_lighting(scene->light_y);
     set_material(&(scene->material));
+
     draw_raptor(scene);
 
     draw_desert(scene);
-
     draw_cactus(scene);
 }
 void set_left_dino(Scene *scene)
@@ -158,10 +164,10 @@ float *get_camera_position(const Scene *scene)
     camera_position[2] = scene->raptor_z + 0.8;
     return camera_position;
 }
-void draw_cactus(const Scene *scene)
+void draw_cactus(Scene *scene)
 {
     srand(time(NULL));
-    for (int i = 30; i < 210; i = i + 15)
+    for (int i = 30; i < 180; i = i + 15)
     {
         int index = i / 15;
         glPushMatrix();
@@ -169,12 +175,8 @@ void draw_cactus(const Scene *scene)
         glScalef(0.1, 0.1, 0.1);
         glRotatef(90, 1, 0, 0);
         float y = i * -1;
-        printf("y: %f raptor:%f\n", y, scene->raptor_y);
-        if (i > (int)scene->raptor_y)
-        {
-            draw_model(&(scene->cactus), cactus_pos[index], 0.0f, y);
-            draw_model(&(scene->cactus), cactus_pos[index + 1], 0.0f, y);
-        }
+        draw_model(&(scene->cactus), cactus_pos[index], 0.0f, y);
+        draw_model(&(scene->cactus), cactus_pos[index - 1], 0.0f, y);
         glPopMatrix();
     }
 }
@@ -211,7 +213,7 @@ void draw_desert(const Scene *scene)
     glBindTexture(GL_TEXTURE_2D, scene->desert_texture_id);
     glBegin(GL_QUADS);
     glPushMatrix();
-    for (int i = -1; i < 21; i++)
+    for (int i = -1; i < 20; i++)
     {
         for (int j = -2; j <= 2; j++)
         {

@@ -53,7 +53,7 @@ void render_scene(const Scene *scene);
  */
 void draw_road(const Scene *scene);
 void draw_desert(const Scene *scene);
-void draw_cactus(const Scene *scene);
+void draw_cactus(Scene *scene);
 void draw_raptor(const Scene *scene);
 
 #endif /* SCENE_H */
