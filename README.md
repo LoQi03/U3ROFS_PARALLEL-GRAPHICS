@@ -15,7 +15,7 @@
 ### PARARELL/3.beadandó
 
     Téma: Order By, Search
-    Leírás: Több szálon történe rendezés, illetve keresés. C# nelyven, blazor és ASP .Net segítségével.
+    Leírás: Több szálon történő rendezés, illetve keresés. C# nelyven, blazor és ASP .Net segítségével.
 
 ## Grafika beadandó:
 
