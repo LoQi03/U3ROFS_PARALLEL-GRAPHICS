@@ -62,6 +62,9 @@ void init_scene(Scene *scene)
 
     // speed
     scene->speed = 1.2;
+
+    glEnable(GL_FOG);
+    glFogf(GL_FOG_DENSITY, 0.25f);
 }
 
 void set_lighting()
@@ -69,7 +72,7 @@ void set_lighting()
     float ambient_light[] = {1.0f, 1.0f, 1.0f, 1.0f};
     float diffuse_light[] = {1.0f, 1.0f, 1.0, 1.0f};
     float specular_light[] = {0.0f, 0.0f, 0.0f, 1.0f};
-    float position[] = {0.0f, 50.0f, 10.0f, 1.0f};
+    float position[] = {0.0f, 100.0f, 10.0f, 1.0f};
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
@@ -273,6 +276,7 @@ void draw_raptor(const Scene *scene)
 }
 void help(GLuint texture)
 {
+    glDisable(GL_FOG);
     glDisable(GL_DEPTH_TEST);
 
     glMatrixMode(GL_MODELVIEW);
@@ -293,13 +297,14 @@ void help(GLuint texture)
     glEnd();
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_FOG);
 }
 void draw_desert(const Scene *scene)
 {
     glBindTexture(GL_TEXTURE_2D, scene->desert_texture_id);
     glBegin(GL_QUADS);
     glPushMatrix();
-    for (int i = -1; i < 25; i++)
+    for (int i = -2; i < 25; i++)
     {
         for (int j = -5; j <= 5; j++)
         {
