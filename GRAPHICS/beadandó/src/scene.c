@@ -224,7 +224,7 @@ void draw_cactus(Scene *scene)
     srand(time(NULL));
     for (int i = 0; i <= 20; i++)
     {
-        if (scene->cactus_distance_y[i] / 5 > scene->raptor_y - 9.0f && scene->cactus_distance_y[i] / 5 < scene->raptor_y + 9.0f)
+        if (scene->cactus_distance_y[i] / 5 > scene->raptor_y - 12.0f && scene->cactus_distance_y[i] / 5 < scene->raptor_y + 12.0f)
         {
             float y = scene->cactus_distance_y[i] * -1;
             float pos_x = 0;
