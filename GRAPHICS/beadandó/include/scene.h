@@ -3,47 +3,20 @@
 
 #include "camera.h"
 #include "texture.h"
+#include "game.h"
 #include <obj/model.h>
 #include <stdbool.h>
 
 typedef struct Scene
 {
-    // raptor
-    Model raptor;
-    float raptor_x;
-    float raptor_y;
-    float raptor_z;
-    float raptor_rotation;
-    GLuint raptor_texture_id;
-
-    // road
-    GLuint road_texture_id;
-
+    GameObject raptor;
+    GameObject sun;
+    GameObject cactuses[30];
+    GameObject houses[3];
+    GameSettings settings;
     // desert
     GLuint desert_texture_id;
-
-    // cactus
-    Model cactus;
-    GLuint cactus_texture_id;
-    float cactus_distance_x[30];
-    float cactus_distance_y[30];
-
-    // house
-    Model house;
-    GLuint house_texture_id;
-
-    // sun
-    Model sun;
-    GLuint sun_texture_id;
-    float sun_x;
-    float sun_y;
-    float sun_z;
-    float sun_rotation;
-    
-    // camera
-    bool lock_camera;
     // help
-    bool help;
     // time
     double current_time;
     double last_time;
@@ -53,6 +26,7 @@ typedef struct Scene
     Material material;
 } Scene;
 
+void set_lighting(float lightingLevel, float x, float y, float z);
 /**
  * Initialize the scene by loading models.
  */
@@ -76,6 +50,7 @@ void draw_desert(const Scene *scene);
 void draw_cactus(Scene *scene);
 void draw_raptor(const Scene *scene);
 void draw_house(const Scene *scene);
+void draw_sun(Scene *scene);
 /**
  * Draw the help.
  */

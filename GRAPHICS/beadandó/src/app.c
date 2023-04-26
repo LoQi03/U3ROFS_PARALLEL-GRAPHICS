@@ -121,13 +121,20 @@ void handle_app_events(App *app)
             case SDL_SCANCODE_ESCAPE:
                 app->is_running = false;
                 break;
+            case SDL_SCANCODE_3:
+                app->scene.settings.lightingLevel += 0.2f;
+                set_lighting(app->scene.settings.lightingLevel, app->scene.sun.x, app->scene.sun.y, app->scene.sun.z);
+                break;
+            case SDL_SCANCODE_4:
+                app->scene.settings.lightingLevel -= 0.2f;
+                set_lighting(app->scene.settings.lightingLevel, app->scene.sun.x, app->scene.sun.y, app->scene.sun.z);
+                break;
             case SDL_SCANCODE_W:
                 if (is_camera_locked(&(app->scene)) == true)
                     break;
                 set_camera_speed(&(app->camera), 1);
                 break;
             case SDL_SCANCODE_S:
-
                 if (is_camera_locked(&(app->scene)) == true)
                     break;
                 else
