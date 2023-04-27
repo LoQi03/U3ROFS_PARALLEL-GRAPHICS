@@ -14,15 +14,9 @@ typedef struct Scene
     GameObject cactuses[30];
     GameObject houses[3];
     GameSettings settings;
-    // desert
     GLuint desert_texture_id;
-    // help
-    // time
     double current_time;
     double last_time;
-    // speed
-    float speed;
-    // material
     Material material;
 } Scene;
 
