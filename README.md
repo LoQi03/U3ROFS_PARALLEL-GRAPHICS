@@ -35,16 +35,16 @@ x=0.5 N=1000000
 
 ### PARARELL/3.beadandó
 
-    Téma: Order By, Search
-    Leírás: Több szálon történő rendezés, illetve keresés. C# nelyven, blazor és ASP .Net segítségével.
-    AsPararell().OrderBy összevetése az OrdeBy-al
-    AsPararell().Where összevetése a Where-el
-    Mérési eredmények a programban.
-    Tetszőlegesen állítható a szekvenciális és a párhuzamos futás.
+Téma: Order By, Search
+Leírás: Több szálon történő rendezés, illetve keresés. C# nelyven, blazor és ASP .Net segítségével.
+AsPararell().OrderBy összevetése az OrdeBy-al
+AsPararell().Where összevetése a Where-el
+Mérési eredmények a programban.
+Tetszőlegesen állítható a szekvenciális és a párhuzamos futás.
 
 ## Grafika beadandó:
 
 ### GRAPHICS/beadandó
 
-    Téma:Dinós játék
-    Leírás: Egy dinóval kell kikerülni a kaktuszokat a sivatagban. A játéknak vége ha a dinó meghal.
+Téma:Dinós játék
+Leírás: Egy dinóval kell kikerülni a kaktuszokat a sivatagban. A játéknak vége ha a dinó meghal.
