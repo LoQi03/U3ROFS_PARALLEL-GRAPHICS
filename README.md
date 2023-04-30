@@ -19,6 +19,7 @@ Leírás: Generál N db számot, majd bekéri hogy hány szálon végezze el. Il
 Téma: Taylor sorbafejtés
 Leírás: kiszámolja az exp,sin,cos értékeket több szálon, illetve a sorbafejtésnél az összeadást is több szálon végzi el.
     x=0.5 N=1000000
+
     Pararell:
     |   f  |    time   |
     |  exp | 21.871000 |
