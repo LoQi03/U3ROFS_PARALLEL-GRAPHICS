@@ -1,7 +1,7 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#define N 1000
+#define N 150000
 int arr[N];
 
 void quickSort(int *arr, int left, int right);

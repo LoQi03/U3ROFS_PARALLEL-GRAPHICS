@@ -7,6 +7,8 @@ int main()
     int num_threads, i;
     pthread_t *threads;
     int *args;
+    printf("Add meg a szalak szamat: ");
+    scanf("%d", &num_threads);
     srand(time(NULL));
     for (int i = 0; i < N; i++)
     {
@@ -14,9 +16,7 @@ int main()
         printf("%d\n", arr[i]);
     }
 
-    printf("Add meg a szalak szamat: ");
-    scanf("%d", &num_threads);
-
+    clock_t begin = clock();
     threads = (pthread_t *)malloc(num_threads * sizeof(pthread_t));
     args = (int *)malloc(num_threads * 2 * sizeof(int));
     int chunk_size = N / num_threads;
@@ -34,12 +34,10 @@ int main()
     {
         pthread_join(threads[i], NULL);
     }
+    printf("parallel_quickSort:%lf\n", (double)(clock() - begin) / CLOCKS_PER_SEC);
+    begin = clock();
     quickSort(arr, 0, N - 1);
-    printf("A rendezett sorozat: ");
-    for (int i = 0; i < N; i++)
-    {
-        printf("%d ", arr[i]);
-    }
+    printf("sequence_quickSort:%lf\n", (double)(clock() - begin) / CLOCKS_PER_SEC);
     printf("\n");
 
     return 0;

@@ -114,7 +114,7 @@ void update_scene(Scene *scene)
     scene->sun.y = scene->raptor.y / 2 + 6;
     if (scene->raptor.y > 35.0)
     {
-        scene->speed *= 1.2;
+        scene->settings.speed *= 1.2;
         generate_random_cactus(scene);
         scene->raptor.y = -1.0;
     }

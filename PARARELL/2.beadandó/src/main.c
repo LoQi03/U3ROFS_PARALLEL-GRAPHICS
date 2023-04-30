@@ -11,10 +11,7 @@ int main(int argc, char *argv[])
     }
     double x = strtod(argv[1], NULL); // pont, ahol a függvényeket kiértékeljük
     int n = atoi(argv[2]);            // sorfejtés pontossága
-    double result_cos, result_sin, result_exp;
-    clock_t start = clock();
-    printf("x = %f, n = %d\n", x, n);
-
+    printf("pararell:\n");
 #pragma omp parallel
     {
 #pragma omp sections
@@ -27,5 +24,9 @@ int main(int argc, char *argv[])
             exp_taylor(x, n);
         }
     }
+    printf("szekvencialis:\n");
+    seq_cos_taylor(x, n);
+    seq_sin_taylor(x, n);
+    seq_exp_taylor(x, n);
     return 0;
 }
