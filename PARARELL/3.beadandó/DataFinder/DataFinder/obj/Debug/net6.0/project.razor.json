@@ -9,43 +9,6 @@
   "ProjectWorkspaceState": {
     "TagHelpers": [
       {
-        "HashCode": 349877462,
-        "Kind": "Components.Component",
-        "Name": "DataFinder.App",
-        "AssemblyName": "DataFinder",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "App"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "DataFinder.App",
-          "Common.TypeNamespace": "DataFinder",
-          "Common.TypeNameIdentifier": "App"
-        }
-      },
-      {
-        "HashCode": -1850415744,
-        "Kind": "Components.Component",
-        "Name": "DataFinder.App",
-        "AssemblyName": "DataFinder",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "DataFinder.App"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "DataFinder.App",
-          "Common.TypeNamespace": "DataFinder",
-          "Common.TypeNameIdentifier": "App",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
         "HashCode": 45337419,
         "Kind": "Components.Component",
         "Name": "DataFinder.Pages.Index",
@@ -244,6 +207,43 @@
           "Common.TypeNamespace": "DataFinder.Shared",
           "Common.TypeNameIdentifier": "MainLayout",
           "Components.IsSpecialKind": "Components.ChildContent",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 349877462,
+        "Kind": "Components.Component",
+        "Name": "DataFinder.App",
+        "AssemblyName": "DataFinder",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "App"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "DataFinder.App",
+          "Common.TypeNamespace": "DataFinder",
+          "Common.TypeNameIdentifier": "App"
+        }
+      },
+      {
+        "HashCode": -1850415744,
+        "Kind": "Components.Component",
+        "Name": "DataFinder.App",
+        "AssemblyName": "DataFinder",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "DataFinder.App"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "DataFinder.App",
+          "Common.TypeNamespace": "DataFinder",
+          "Common.TypeNameIdentifier": "App",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },

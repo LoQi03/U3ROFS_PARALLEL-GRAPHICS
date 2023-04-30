@@ -1,112 +1,51 @@
 ﻿using DataFinder.Model;
-
+using System.Collections.Generic;
+using System.Linq;
 namespace DataFinder.Extensions
 {
     public class DataHandleExtension
     {
         public static List<DataModel> MultiThreadedSort(List<DataModel> datas, string prop)
         {
-            List<Task<List<DataModel>>> tasks = new List<Task<List<DataModel>>>();
-            int threadCount = Environment.ProcessorCount;
-            int batchSize = datas.Count / threadCount;
-            int remainingCount = datas.Count;
-
-            for (int i = 0; i < threadCount; i++)
-            {
-                int startIndex = i * batchSize;
-                int count = i == threadCount - 1 ? remainingCount : batchSize;
-                remainingCount -= count;
-
-                if (prop == "Email")
-                    tasks.Add(Task.Run(() =>
-                    {
-                        List<DataModel> batch = datas.GetRange(startIndex, count);
-                        return batch.OrderBy(x => x.Email).ToList();
-                    }));
-                else if (prop == "Id")
-                    tasks.Add(Task.Run(() =>
-                    {
-                        List<DataModel> batch = datas.GetRange(startIndex, count);
-                        return batch.OrderBy(x => x.Id).ToList();
-                    }));
-                else if (prop == "City")
-                    tasks.Add(Task.Run(() =>
-                    {
-                        List<DataModel> batch = datas.GetRange(startIndex, count);
-                        return batch.OrderBy(x => x.City).ToList();
-                    }));
-                else if (prop == "Age")
-                    tasks.Add(Task.Run(() =>
-                    {
-                        List<DataModel> batch = datas.GetRange(startIndex, count);
-                        return batch.OrderBy(x => x.Age).ToList();
-                    }));
-                else
-                {
-                    tasks.Add(Task.Run(() =>
-                    {
-                        List<DataModel> batch = datas.GetRange(startIndex, count);
-                        return batch.OrderBy(x => x.Name).ToList();
-                    }));
-                }
-            }
-
-            List<DataModel> result = new List<DataModel>();
-            foreach (var task in tasks)
-            {
-                result.AddRange(task.Result);
-            }
-
-            return result;
+            if (prop == "Email")
+                return datas.AsParallel().OrderBy(x => x.Email).ToList();
+            else if (prop == "Id")
+                return datas.AsParallel().OrderBy(x => x.Id).ToList();
+            else if (prop == "City")
+                return datas.AsParallel().OrderBy(x => x.City).ToList();
+            else if (prop == "Age")
+                return datas.AsParallel().OrderBy(x => x.Age).ToList();
+            else
+                return datas.AsParallel().OrderBy(x => x.Name).ToList();
         }
         public static List<DataModel> MultiThreadedSearch(List<DataModel> datas, string searchText)
         {
-            List<Task<List<DataModel>>> tasks = new List<Task<List<DataModel>>>();
-            int threadCount = Environment.ProcessorCount;
-            int batchSize = datas.Count / threadCount;
-            int remainingCount = datas.Count;
+            return datas.AsParallel().Where(x => x.Email.Contains(searchText)
+                            || x.Id.ToString().Contains(searchText)
+                            || x.City.Contains(searchText)
+                            || x.Age.ToString().Contains(searchText)).ToList();
+        }
+        public static List<DataModel> SequentialSort(List<DataModel> datas, string prop)
+        {
+            if (prop == "Email")
+                return datas.OrderBy(x => x.Email).ToList();
+            else if (prop == "Id")
+                return datas.OrderBy(x => x.Id).ToList();
+            else if (prop == "City")
+                return datas.OrderBy(x => x.City).ToList();
+            else if (prop == "Age")
+                return datas.OrderBy(x => x.Age).ToList();
+            else
+                return datas.OrderBy(x => x.Name).ToList();
+        }
 
-            for (int i = 0; i < threadCount; i++)
-            {
-                int startIndex = i * batchSize;
-                int count = i == threadCount - 1 ? remainingCount : batchSize;
-                remainingCount -= count;
-
-                tasks.Add(Task.Run(() =>
-                {
-                    List<DataModel> batch = datas.GetRange(startIndex, count);
-                    return batch.FindAll(x => x.Email.Contains(searchText)).ToList();
-                }));
-                tasks.Add(Task.Run(() =>
-                {
-                    List<DataModel> batch = datas.GetRange(startIndex, count);
-                    return batch.FindAll(x => x.Id.ToString().Contains(searchText)).ToList();
-                }));
-                tasks.Add(Task.Run(() =>
-                {
-                    List<DataModel> batch = datas.GetRange(startIndex, count);
-                    return batch.FindAll(x => x.City.Contains(searchText)).ToList();
-                }));
-                tasks.Add(Task.Run(() =>
-                {
-                    List<DataModel> batch = datas.GetRange(startIndex, count);
-                    return batch.FindAll(x => x.Age.ToString().Contains(searchText)).ToList();
-                }));
-
-                tasks.Add(Task.Run(() =>
-                {
-                    List<DataModel> batch = datas.GetRange(startIndex, count);
-                    return batch.FindAll(x => x.Name.Contains(searchText)).ToList();
-                }));
-            }
-
-            List<DataModel> result = new List<DataModel>();
-            foreach (var task in tasks)
-            {
-                result.AddRange(task.Result);
-            }
-
-            return result;
+        public static List<DataModel> SequentialSearch(List<DataModel> datas, string searchText)
+        {
+            return datas.Where(x => x.Email.Contains(searchText)
+                            || x.Id.ToString().Contains(searchText)
+                            || x.City.Contains(searchText)
+                            || x.Age.ToString().Contains(searchText)).ToList();
         }
     }
 }
+

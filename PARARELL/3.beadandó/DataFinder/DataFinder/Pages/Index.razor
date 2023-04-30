@@ -1,10 +1,16 @@
 ﻿@page "/"
 @using DataFinder.Extensions;
 @using DataFinder.Model;
-
+@using System.Diagnostics;
 <PageTitle>Data Finder</PageTitle>
 <div>
     <div>
+        <button type="button" class="btn btn-primary my-2" @onclick="(()=>{
+            isPararell = isPararell ? isPararell = false : isPararell = true;
+         })">
+            @(isPararell ? "Pararell" : "Sequence")
+        </button>
+         <div>@time</div>
         <h3>Search</h3>
         <div>
             <input type="text" class="form-control" id="text" aria-describedby="text" placeholder="Some text" @bind="searchText">
@@ -57,9 +63,11 @@
     </table>
 </div>
 @code{
+    private bool isPararell = true;
     private string searchText = "";
     private List<DataModel>? SearchedDatas = null;
     private static Random _random = new Random();
+    private double? time;
     private static string GetCity()
     {
         int city = _random.Next(2);
@@ -69,7 +77,7 @@
         else
             return "Budapest";
     }
-    private List<DataModel> DataList = Enumerable.Range(0, 1000).Select(x => new DataModel
+    private List<DataModel> DataList = Enumerable.Range(0, 6000).Select(x => new DataModel
             {
                 Age = _random.Next(1, 100),
                 Name = Guid.NewGuid().ToString().Split('-').First(),
@@ -80,47 +88,128 @@
 
     private async void SortById()
     {
-        if(SearchedDatas is null)
-        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Id"); });
+        var watch = new System.Diagnostics.Stopwatch(); 
+        watch.Start();
+        if (isPararell)
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Id"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Id"); });
+        }
         else
-        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Id"); });
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.SequentialSort(DataList, "Id"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.SequentialSort(SearchedDatas, "Id"); });
+        }
+        watch.Stop(); 
+        time = watch.Elapsed.TotalMilliseconds;
         StateHasChanged();
     }
     private async void SortByAge()
     {
-        if(SearchedDatas is null)
-        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Age"); });
+        var watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
+        if (isPararell)
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Age"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Age"); });
+        }
         else
-        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Age"); });
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.SequentialSort(DataList, "Age"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.SequentialSort(SearchedDatas, "Age"); });
+        }
+        watch.Stop();
+        time = watch.Elapsed.TotalMilliseconds;
         StateHasChanged();
     }
     private async void SortByName()
     {
-        if(SearchedDatas is null)
-        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Name"); });
+        var watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
+        if (isPararell)
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Name"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Name"); });
+        }
         else
-        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Name"); });
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.SequentialSort(DataList, "Name"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.SequentialSort(SearchedDatas, "Name"); });
+        }
+        watch.Stop();
+        time = watch.Elapsed.TotalMilliseconds;
         StateHasChanged();
     }
     private async void SortByEmail()
     {
-        if(SearchedDatas is null)
-        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Email"); });
+        var watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
+        if (isPararell)
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "Email"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Email"); });
+        }
         else
-        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "Email"); });
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.SequentialSort(DataList, "Email"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.SequentialSort(SearchedDatas, "Email"); });
+        }
+        watch.Stop();
+        time = watch.Elapsed.TotalMilliseconds;
         StateHasChanged();
     }
     private async void SortByCity()
     {
-        if(SearchedDatas is null)
-        DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "City"); });
+        var watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
+        if (isPararell)
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(DataList, "City"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "City"); });
+        }
         else
-        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSort(SearchedDatas, "City"); });
+        {
+            if (SearchedDatas is null)
+                DataList = await Task.Run(() => { return DataHandleExtension.SequentialSort(DataList, "City"); });
+            else
+                SearchedDatas = await Task.Run(() => { return DataHandleExtension.SequentialSort(SearchedDatas, "City"); });
+        }
+        watch.Stop();
+        time = watch.Elapsed.TotalMilliseconds;
         StateHasChanged();
     }
     private async void Search()
     {
-        SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSearch(DataList, searchText); });
+        var watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
+        if(isPararell)
+        {
+            SearchedDatas = await Task.Run(() => { return DataHandleExtension.MultiThreadedSearch(DataList, searchText); });
+        }
+        else
+        {
+            SearchedDatas = await Task.Run(() => { return DataHandleExtension.SequentialSearch(DataList, searchText); });
+        }
+        watch.Stop();
+        time = watch.Elapsed.TotalMilliseconds;
         StateHasChanged();
     }
     private void Reset()

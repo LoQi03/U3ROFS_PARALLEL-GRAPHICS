@@ -18,7 +18,8 @@ Leírás: Generál N db számot, majd bekéri hogy hány szálon végezze el. Il
 
 Téma: Taylor sorbafejtés
 Leírás: kiszámolja az exp,sin,cos értékeket több szálon, illetve a sorbafejtésnél az összeadást is több szálon végzi el.
-    x=0.5 N=1000000
+
+x=0.5 N=1000000
 
     Pararell:
     |   f  |    time   |
@@ -36,10 +37,14 @@ Leírás: kiszámolja az exp,sin,cos értékeket több szálon, illetve a sorbaf
 
     Téma: Order By, Search
     Leírás: Több szálon történő rendezés, illetve keresés. C# nelyven, blazor és ASP .Net segítségével.
+    AsPararell().OrderBy összevetése az OrdeBy-al
+    AsPararell().Where összevetése a Where-el
+    Mérési eredmények a programban.
+    Tetszőlegesen állítható a szekvenciális és a párhuzamos futás.
 
 ## Grafika beadandó:
 
 ### GRAPHICS/beadandó
 
     Téma:Dinós játék
-    Leírás: Egy dinóval kell kikerülni a kaktuszokat a sivatagban.
+    Leírás: Egy dinóval kell kikerülni a kaktuszokat a sivatagban. A játéknak vége ha a dinó meghal.
