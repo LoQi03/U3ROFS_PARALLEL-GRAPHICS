@@ -4,12 +4,13 @@
 #include "camera.h"
 #include "texture.h"
 #include "game.h"
+#include "dino.h"
 #include <obj/model.h>
 #include <stdbool.h>
 
 typedef struct Scene
 {
-    GameObject raptor;
+    Dino raptor;
     GameObject sun;
     GameObject cactuses[30];
     GameObject houses[3];
