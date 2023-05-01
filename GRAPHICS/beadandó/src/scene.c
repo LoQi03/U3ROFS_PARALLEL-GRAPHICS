@@ -1,23 +1,18 @@
 #include "scene.h"
-
-#include <obj/load.h>
-#include <obj/draw.h>
-#include <obj/transform.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <time.h>
-#include <omp.h>
-
 void init_scene(Scene *scene)
 {
+    scene->heart_texture_id = load_texture("assets/textures/heart.jpg");
+    scene->description_texture_id = load_texture("assets/textures/descript.jpg");
     // raptor
-    load_model(&(scene->raptor.model), "assets/models/raptor.obj");
-    scene->raptor.texture_id = load_texture("assets/textures/raptor.png");
-    scene->raptor.x = 1.20;
-    scene->raptor.y = -2.0;
-    scene->raptor.z = 0.0;
-    scene->raptor.rotation = 0.0;
+
+    load_model(&(scene->raptor.object.model), "assets/models/raptor.obj");
+    scene->raptor.object.texture_id = load_texture("assets/textures/raptor.png");
+    scene->raptor.object.x = 1.20;
+    scene->raptor.object.y = -3.0;
+    scene->raptor.object.z = 0.0;
+    scene->raptor.object.rotation = 0.0;
+    scene->raptor.hp = 100.0;
+    scene->raptor.object.scale = 0.5;
 
     for (int i = 0; i < 3; i++)
     {
@@ -25,22 +20,27 @@ void init_scene(Scene *scene)
         scene->houses[i].texture_id = load_texture("assets/textures/house.jpg");
         scene->houses[i].scale = 0.005;
     }
+
     // sun
     load_model(&(scene->sun.model), "assets/models/geoid.obj");
     scene->sun.texture_id = load_texture("assets/textures/sun.png");
     scene->sun.rotation = 0.0;
     scene->sun.x = 2.0f;
-    scene->sun.y = scene->raptor.y / 2 + 6;
+    scene->sun.y = scene->raptor.object.y / 2 + 6;
     scene->sun.z = 4.0f;
+    scene->sun.scale = 0.5;
 
     // desert
     scene->desert_texture_id = load_texture("assets/textures/desert.jpg");
+    // cactus
     for (int i = 0; i < 30; i++)
     {
         load_model(&(scene->cactuses[i].model), "assets/models/cactus.obj");
         scene->cactuses[i].texture_id = load_texture("assets/textures/cactus.jpg");
+        scene->cactuses[i].scale = 0.1;
+        scene->cactuses[i].rotation = 90.0;
     }
-    generate_random_cactus(scene);
+    generate_random_cactus(scene->cactuses);
 
     // material
     scene->material.ambient.red = 0.0;
@@ -61,6 +61,7 @@ void init_scene(Scene *scene)
     scene->settings.lightingLevel = 1.0f;
     scene->settings.is_paused = false;
     scene->settings.speed = 1.2;
+
     glEnable(GL_FOG);
     glFogf(GL_FOG_DENSITY, 0.35f);
 }
@@ -106,69 +107,46 @@ void update_scene(Scene *scene)
 {
     if (scene->settings.is_paused)
     {
+        scene->current_time = (double)SDL_GetTicks() / 1000;
+        scene->last_time = scene->current_time;
         return;
     }
-    scene->current_time = (double)SDL_GetTicks() / 1000;
-    scene->raptor.y += scene->settings.speed * (scene->current_time - scene->last_time);
-    scene->sun.rotation = scene->current_time * 180 / 3.14;
-    scene->sun.y = scene->raptor.y / 2 + 6;
-    if (scene->raptor.y > 35.0)
+    else
     {
-        scene->settings.speed *= 1.2;
-        generate_random_cactus(scene);
-        scene->raptor.y = -1.0;
-    }
-    for (size_t i = 0; i <= 20; i++)
-    {
-        if (scene->raptor.y > scene->cactuses[i].y / 5 - 0.5 && scene->raptor.y < scene->cactuses[i].y / 5 + 0.5)
+        scene->current_time = (double)SDL_GetTicks() / 1000;
+        scene->raptor.object.y += scene->settings.speed * (scene->current_time - scene->last_time);
+        scene->sun.rotation = scene->current_time * 180 / 3.14;
+        scene->sun.y = scene->raptor.object.y / 2 + 6;
+        if (scene->raptor.object.y > 35.0)
         {
-            if (scene->raptor.x == scene->cactuses[i].x)
+            scene->settings.speed *= 1.2;
+            generate_random_cactus(scene->cactuses);
+            scene->raptor.object.y = -1.0;
+        }
+        for (size_t i = 0; i <= 20; i++)
+        {
+            if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.06 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.06)
             {
-                printf("Game Over\n");
-                // exit(0);
+                if (scene->raptor.object.x == scene->cactuses[i].x)
+                {
+                    scene->raptor.hp -= 1.0;
+                    printf("HP: %f\n", scene->raptor.hp);
+                }
             }
         }
-    }
-
-    scene->last_time = scene->current_time;
-}
-void generate_random_cactus(Scene *scene)
-{
-    float distance = 15.0;
-    srand(time(NULL));
-    for (int i = 0; i <= 20; i += 2)
-    {
-        int r = (rand() % 3) + 1;
-        if (r == 1)
-            scene->cactuses[i].x = 0.6;
-        else if (r == 2)
-            scene->cactuses[i].x = 1.8;
-        else if (r == 3)
-            scene->cactuses[i].x = 1.2;
-
-        r = (rand() % 3) + 1;
-        if (r == 1)
-            scene->cactuses[i + 1].x = 0.6;
-        else if (r == 2)
-            scene->cactuses[i + 1].x = 1.8;
-        else if (r == 3)
-            scene->cactuses[i + 1].x = 1.2;
-
-        scene->cactuses[i].y = distance;
-        scene->cactuses[i + 1].y = distance;
-        distance += 15.0f;
+        scene->last_time = scene->current_time;
     }
 }
+
 void render_scene(const Scene *scene)
 {
     if (scene->settings.is_paused)
     {
         glDisable(GL_LIGHTING);
-        help(scene->raptor.texture_id);
+        help(scene->description_texture_id);
     }
     else
     {
-        glEnable(GL_LIGHTING);
         set_lighting(scene->settings.lightingLevel, scene->sun.x, scene->sun.y, scene->sun.z);
         update_scene(scene);
         set_material(&(scene->material));
@@ -179,19 +157,20 @@ void render_scene(const Scene *scene)
 
         draw_cactus(scene);
         draw_sun(scene);
+        draw_hearts(scene->heart_texture_id);
     }
 }
 void set_left_dino(Scene *scene)
 {
-    scene->raptor.x = 0.6;
+    scene->raptor.object.x = 0.6;
 }
 void set_right_dino(Scene *scene)
 {
-    scene->raptor.x = 1.80;
+    scene->raptor.object.x = 1.80;
 }
 void set_center_dino(Scene *scene)
 {
-    scene->raptor.x = 1.20;
+    scene->raptor.object.x = 1.20;
 }
 void togle_camera_lock(Scene *scene)
 {
@@ -217,8 +196,8 @@ float *get_camera_position(const Scene *scene)
 {
     static float camera_position[3];
     camera_position[0] = 1.2 * 0.4;
-    camera_position[1] = scene->raptor.y * 0.5 - 1.5;
-    camera_position[2] = scene->raptor.z + 0.8;
+    camera_position[1] = scene->raptor.object.y * 0.5 - 1.5;
+    camera_position[2] = scene->raptor.object.z + 0.8;
     return camera_position;
 }
 void draw_sun(Scene *scene)
@@ -226,9 +205,18 @@ void draw_sun(Scene *scene)
     glPushMatrix();
     glBindTexture(GL_TEXTURE_2D, scene->sun.texture_id);
     glTranslatef(scene->sun.x, scene->sun.y, scene->sun.z);
-    glScalef(0.5, 0.5, 0.5);
+    glScalef(scene->sun.scale, scene->sun.scale, scene->sun.scale);
     glRotatef(scene->sun.rotation, 0, 0, 1);
     draw_model(&(scene->sun.model));
+    glPopMatrix();
+}
+void draw_raptor(const Scene *scene)
+{
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D, scene->raptor.object.texture_id);
+    glScalef(scene->raptor.object.scale, scene->raptor.object.scale, scene->raptor.object.scale);
+    glTranslatef(scene->raptor.object.x, scene->raptor.object.y, scene->raptor.object.z);
+    draw_model(&(scene->raptor.object.model));
     glPopMatrix();
 }
 void draw_cactus(Scene *scene)
@@ -236,13 +224,13 @@ void draw_cactus(Scene *scene)
     srand(time(NULL));
     for (int i = 0; i <= 20; i++)
     {
-        if (scene->cactuses[i].y / 5 > scene->raptor.y - 12.0f && scene->cactuses[i].y / 5 < scene->raptor.y + 12.0f)
+        if (scene->cactuses[i].y / 5 > scene->raptor.object.y - 12.0f && scene->cactuses[i].y / 5 < scene->raptor.object.y + 12.0f)
         {
             float y = scene->cactuses[i].y * -1;
             float pos_x = 0;
             if (scene->cactuses[i].x == 0.6f)
             {
-                pos_x = 2.0;
+                pos_x = 2.0f;
             }
             else if (scene->cactuses[i].x == 1.2f)
             {
@@ -254,8 +242,8 @@ void draw_cactus(Scene *scene)
             }
             glPushMatrix();
             glBindTexture(GL_TEXTURE_2D, scene->cactuses[i].texture_id);
-            glScalef(0.1, 0.1, 0.1);
-            glRotatef(90, 1, 0, 0);
+            glScalef(scene->cactuses[i].scale, scene->cactuses[i].scale, scene->cactuses[i].scale);
+            glRotatef(scene->cactuses[i].rotation, 1, 0, 0);
             glTranslatef(pos_x, 0, y);
             draw_model(&(scene->cactuses[i].model));
             glPopMatrix();
@@ -278,15 +266,6 @@ void draw_house(const Scene *scene)
         y += 1000.0f;
     }
 }
-void draw_raptor(const Scene *scene)
-{
-    glPushMatrix();
-    glBindTexture(GL_TEXTURE_2D, scene->raptor.texture_id);
-    glScalef(0.5, 0.5, 0.5);
-    glTranslatef(scene->raptor.x, scene->raptor.y, scene->raptor.z);
-    draw_model(&(scene->raptor.model));
-    glPopMatrix();
-}
 void help(GLuint texture)
 {
     glDisable(GL_FOG);
@@ -300,15 +279,14 @@ void help(GLuint texture)
 
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3d(-2, 1.5, -3);
+    glVertex3d(-2.5, 1.5, -3);
     glTexCoord2f(1, 0);
-    glVertex3d(2, 1.5, -3);
+    glVertex3d(2.5, 1.5, -3);
     glTexCoord2f(1, 1);
-    glVertex3d(2, -1.5, -3);
+    glVertex3d(2.5, -1.5, -3);
     glTexCoord2f(0, 1);
-    glVertex3d(-2, -1.5, -3);
+    glVertex3d(-2.5, -1.5, -3);
     glEnd();
-
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_FOG);
 }
@@ -319,7 +297,7 @@ void draw_desert(const Scene *scene)
     glPushMatrix();
     for (int i = -2; i < 30; i++)
     {
-        if (i > scene->raptor.y / 2 - 6.0f && i < scene->raptor.y / 2 + 6.0f)
+        if (i > scene->raptor.object.y / 2 - 6.0f && i < scene->raptor.object.y / 2 + 6.0f)
         {
             for (int j = -5; j <= 5; j++)
             {
@@ -339,4 +317,34 @@ void draw_desert(const Scene *scene)
     }
     glPopMatrix();
     glEnd();
+}
+void draw_hearts(GLuint texture)
+{
+    glDisable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+    glDisable(GL_DEPTH_TEST);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glColor3f(1, 1, 1);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    for (int i = 0; i < 4; i++)
+    {
+
+        glBegin(GL_QUADS);
+
+        glTexCoord2f(0, 0);
+        glVertex3d(0.2 / 2 + i / 2.0f, (1.375 / 2.0f) + 0.9f, -3);
+        glTexCoord2f(1, 0);
+        glVertex3d(1.2 / 2 + i / 2.0f, (1.375 / 2.0f) + 0.9f, -3);
+        glTexCoord2f(1, 1);
+        glVertex3d(1.2 / 2 + i / 2.0f, (0.625 / 2.0f) + 0.9f, -3);
+        glTexCoord2f(0, 1);
+        glVertex3d(0.2 / 2 + i / 2.0f, (0.625 / 2.0f) + 0.9f, -3);
+        glEnd();
+    }
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
 }

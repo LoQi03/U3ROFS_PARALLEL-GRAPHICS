@@ -7,7 +7,13 @@
 #include "dino.h"
 #include <obj/model.h>
 #include <stdbool.h>
-
+#include <SDL2/SDL.h>
+#include <obj/load.h>
+#include <obj/draw.h>
+#include <obj/transform.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 typedef struct Scene
 {
     Dino raptor;
@@ -15,6 +21,8 @@ typedef struct Scene
     GameObject cactuses[30];
     GameObject houses[3];
     GameSettings settings;
+    GLuint heart_texture_id;
+    GLuint description_texture_id;
     GLuint desert_texture_id;
     double current_time;
     double last_time;
