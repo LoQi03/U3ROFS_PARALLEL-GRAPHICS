@@ -24,6 +24,7 @@ typedef struct Scene
     GLuint heart_texture_id;
     GLuint description_texture_id;
     GLuint desert_texture_id;
+    int health;
     double current_time;
     double last_time;
     Material material;

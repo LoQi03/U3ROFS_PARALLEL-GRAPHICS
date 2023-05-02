@@ -11,9 +11,9 @@ void init_scene(Scene *scene)
     scene->raptor.object.y = -3.0;
     scene->raptor.object.z = 0.0;
     scene->raptor.object.rotation = 0.0;
-    scene->raptor.hp = 100.0;
+    scene->raptor.hp = 12.0f;
     scene->raptor.object.scale = 0.5;
-
+    scene->health = 4;
     for (int i = 0; i < 3; i++)
     {
         load_model(&(scene->houses[i].model), "assets/models/house.obj");
@@ -32,38 +32,24 @@ void init_scene(Scene *scene)
 
     // desert
     scene->desert_texture_id = load_texture("assets/textures/desert.jpg");
+
     // cactus
-    for (int i = 0; i < 30; i++)
-    {
-        load_model(&(scene->cactuses[i].model), "assets/models/cactus.obj");
-        scene->cactuses[i].texture_id = load_texture("assets/textures/cactus.jpg");
-        scene->cactuses[i].scale = 0.1;
-        scene->cactuses[i].rotation = 90.0;
-    }
+    init_cactuses(scene->cactuses);
     generate_random_cactus(scene->cactuses);
 
     // material
-    scene->material.ambient.red = 0.0;
-    scene->material.ambient.green = 0.0;
-    scene->material.ambient.blue = 0.0;
-
-    scene->material.diffuse.red = 1.0;
-    scene->material.diffuse.green = 1.0;
-    scene->material.diffuse.blue = 1.0;
-
-    scene->material.specular.red = 0.0;
-    scene->material.specular.green = 0.0;
-    scene->material.specular.blue = 0.0;
-
-    scene->material.shininess = 0.0;
+    init_material(&(scene->material));
 
     scene->settings.lock_camera = true;
     scene->settings.lightingLevel = 1.0f;
     scene->settings.is_paused = false;
     scene->settings.speed = 1.2;
+    scene->settings.is_over = false;
 
     glEnable(GL_FOG);
     glFogf(GL_FOG_DENSITY, 0.35f);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 }
 
 void set_lighting(float lightingLevel, float x, float y, float z)
@@ -99,12 +85,18 @@ void set_material(const Material *material)
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient_material_color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_material_color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_material_color);
-
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &(material->shininess));
 }
 
 void update_scene(Scene *scene)
 {
+    if (scene->settings.is_over)
+    {
+        scene->current_time = (double)SDL_GetTicks() / 1000;
+        scene->last_time = scene->current_time;
+        return;
+    }
+    set_lighting(scene->settings.lightingLevel, scene->sun.x, scene->sun.y, scene->sun.z);
     if (scene->settings.is_paused)
     {
         scene->current_time = (double)SDL_GetTicks() / 1000;
@@ -125,12 +117,29 @@ void update_scene(Scene *scene)
         }
         for (size_t i = 0; i <= 20; i++)
         {
-            if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.06 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.06)
+            if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.05 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.05)
             {
                 if (scene->raptor.object.x == scene->cactuses[i].x)
                 {
                     scene->raptor.hp -= 1.0;
                     printf("HP: %f\n", scene->raptor.hp);
+                    if (scene->raptor.hp < 12.0)
+                    {
+                        scene->health = 3;
+                    }
+                    if (scene->raptor.hp < 8.0)
+                    {
+                        scene->health = 2;
+                    }
+                    if (scene->raptor.hp < 4.0)
+                    {
+                        scene->health = 1;
+                    }
+                    if (scene->raptor.hp < 0)
+                    {
+                        scene->health = 0;
+                        scene->settings.is_over = true;
+                    }
                 }
             }
         }
@@ -140,24 +149,29 @@ void update_scene(Scene *scene)
 
 void render_scene(const Scene *scene)
 {
-    if (scene->settings.is_paused)
+    if (scene->settings.is_over)
     {
         glDisable(GL_LIGHTING);
-        help(scene->description_texture_id);
+        game_over(scene->description_texture_id);
     }
     else
     {
-        set_lighting(scene->settings.lightingLevel, scene->sun.x, scene->sun.y, scene->sun.z);
-        update_scene(scene);
-        set_material(&(scene->material));
-
-        draw_raptor(scene);
-        draw_desert(scene);
-        draw_house(scene);
-
-        draw_cactus(scene);
-        draw_sun(scene);
-        draw_hearts(scene->heart_texture_id);
+        if (scene->settings.is_paused)
+        {
+            glDisable(GL_LIGHTING);
+            help(scene->description_texture_id);
+        }
+        else
+        {
+            update_scene(scene);
+            set_material(&(scene->material));
+            draw_raptor(scene);
+            draw_desert(scene);
+            draw_house(scene);
+            draw_cactus(scene);
+            draw_sun(scene);
+            draw_hearts(scene->heart_texture_id, scene->health);
+        }
     }
 }
 void set_left_dino(Scene *scene)
@@ -290,6 +304,30 @@ void help(GLuint texture)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_FOG);
 }
+void game_over(GLuint texture)
+{
+    glDisable(GL_FOG);
+    glDisable(GL_DEPTH_TEST);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glColor3f(1, 1, 1);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
+    glVertex3d(-2.5, 1.5, -3);
+    glTexCoord2f(1, 0);
+    glVertex3d(2.5, 1.5, -3);
+    glTexCoord2f(1, 1);
+    glVertex3d(2.5, -1.5, -3);
+    glTexCoord2f(0, 1);
+    glVertex3d(-2.5, -1.5, -3);
+    glEnd();
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_FOG);
+}
 void draw_desert(const Scene *scene)
 {
     glBindTexture(GL_TEXTURE_2D, scene->desert_texture_id);
@@ -318,7 +356,7 @@ void draw_desert(const Scene *scene)
     glPopMatrix();
     glEnd();
 }
-void draw_hearts(GLuint texture)
+void draw_hearts(GLuint texture, int health)
 {
     glDisable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
@@ -329,11 +367,10 @@ void draw_hearts(GLuint texture)
 
     glColor3f(1, 1, 1);
     glBindTexture(GL_TEXTURE_2D, texture);
-    for (int i = 0; i < 4; i++)
+
+    for (int i = 0; i < health; i++)
     {
-
         glBegin(GL_QUADS);
-
         glTexCoord2f(0, 0);
         glVertex3d(0.2 / 2 + i / 2.0f, (1.375 / 2.0f) + 0.9f, -3);
         glTexCoord2f(1, 0);

@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <obj/model.h>
 #include <time.h>
+#include "utils.h"
 
 typedef struct GameObject
 {
@@ -22,8 +23,11 @@ typedef struct GameSettings
     float speed;
     bool lock_camera;
     bool is_paused;
+    bool is_over;
 } GameSettings;
 
 void generate_random_cactus(GameObject *cactuses);
+void init_cactuses(GameObject *cactuses);
+void init_material(Material *material);
 
 #endif /* GAME_H */
