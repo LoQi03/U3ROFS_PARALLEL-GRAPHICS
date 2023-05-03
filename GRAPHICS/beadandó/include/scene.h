@@ -18,13 +18,14 @@ typedef struct Scene
 {
     Dino raptor;
     GameObject sun;
-    GameObject cactuses[30];
-    GameObject houses[3];
+    GameObject cactuses[20];
+    GameObject house;
     GameSettings settings;
     GLuint heart_texture_id;
     GLuint description_texture_id;
     GLuint game_over_texture_id;
     GLuint desert_texture_id;
+    float last_cactus_distance;
     int health;
     double current_time;
     double last_time;
@@ -54,7 +55,7 @@ void draw_road(const Scene *scene);
 void draw_desert(const Scene *scene);
 void draw_cactus(Scene *scene);
 void draw_raptor(const Scene *scene);
-void draw_house(const Scene *scene);
+void draw_house(Scene *scene);
 void draw_sun(Scene *scene);
 /**
  * Draw the help.

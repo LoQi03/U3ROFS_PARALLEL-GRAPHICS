@@ -29,5 +29,5 @@ typedef struct GameSettings
 void generate_random_cactus(GameObject *cactuses);
 void init_cactuses(GameObject *cactuses);
 void init_material(Material *material);
-
+void generate_random_line_cactus(GameObject cactus1, GameObject cactus2);
 #endif /* GAME_H */

@@ -14,12 +14,12 @@ void init_scene(Scene *scene)
     scene->raptor.hp = 12.0f;
     scene->raptor.object.scale = 0.5;
     scene->health = 4;
-    for (int i = 0; i < 3; i++)
-    {
-        load_model(&(scene->houses[i].model), "assets/models/house.obj");
-        scene->houses[i].texture_id = load_texture("assets/textures/house.jpg");
-        scene->houses[i].scale = 0.005;
-    }
+
+    // house
+    load_model(&(scene->house.model), "assets/models/house.obj");
+    scene->house.texture_id = load_texture("assets/textures/house.jpg");
+    scene->house.y = 10.0f;
+    scene->house.scale = 0.005;
 
     // sun
     load_model(&(scene->sun.model), "assets/models/geoid.obj");
@@ -36,7 +36,8 @@ void init_scene(Scene *scene)
     // cactus
     init_cactuses(scene->cactuses);
     generate_random_cactus(scene->cactuses);
-
+    scene->last_cactus_distance = scene->cactuses[11].y;
+    printf("last cactus distance: %f\n", scene->last_cactus_distance);
     // material
     init_material(&(scene->material));
 
@@ -46,8 +47,10 @@ void init_scene(Scene *scene)
     scene->settings.speed = 1.2;
     scene->settings.is_over = false;
 
+    GLfloat fogColor[] = {0.2, 0.58, 0.92, 0.01};
     glEnable(GL_FOG);
-    glFogf(GL_FOG_DENSITY, 0.35f);
+    glFogf(GL_FOG_DENSITY, 0.40f);
+    glFogfv(GL_FOG_COLOR, fogColor);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 }
@@ -109,12 +112,14 @@ void update_scene(Scene *scene)
         scene->raptor.object.y += scene->settings.speed * (scene->current_time - scene->last_time);
         scene->sun.rotation = scene->current_time * 180 / 3.14;
         scene->sun.y = scene->raptor.object.y / 2 + 6;
-        if (scene->raptor.object.y > 35.0)
+        /* if (scene->raptor.object.y > 35.0)
         {
             scene->settings.speed *= 1.2;
             generate_random_cactus(scene->cactuses);
+            scene->last_cactus_distance = scene->cactuses[11].y;
             scene->raptor.object.y = -1.0;
         }
+        */
         for (size_t i = 0; i <= 20; i++)
         {
             if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.05 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.05)
@@ -235,50 +240,53 @@ void draw_raptor(const Scene *scene)
 }
 void draw_cactus(Scene *scene)
 {
-    srand(time(NULL));
-    for (int i = 0; i <= 20; i++)
+    for (int i = 0; i < 12; i++)
     {
-        if (scene->cactuses[i].y / 5 > scene->raptor.object.y - 12.0f && scene->cactuses[i].y / 5 < scene->raptor.object.y + 12.0f)
+        if (scene->cactuses[i].y / 5 + 3.0f < scene->raptor.object.y)
         {
-            float y = scene->cactuses[i].y * -1;
-            float pos_x = 0;
-            if (scene->cactuses[i].x == 0.6f)
-            {
-                pos_x = 2.0f;
-            }
-            else if (scene->cactuses[i].x == 1.2f)
-            {
-                pos_x = 4.9f;
-            }
-            else if (scene->cactuses[i].x == 1.8f)
-            {
-                pos_x = 7.4f;
-            }
-            glPushMatrix();
-            glBindTexture(GL_TEXTURE_2D, scene->cactuses[i].texture_id);
-            glScalef(scene->cactuses[i].scale, scene->cactuses[i].scale, scene->cactuses[i].scale);
-            glRotatef(scene->cactuses[i].rotation, 1, 0, 0);
-            glTranslatef(pos_x, 0, y);
-            draw_model(&(scene->cactuses[i].model));
-            glPopMatrix();
+            scene->cactuses[i].y = scene->last_cactus_distance + 15.0f;
+            scene->cactuses[i + 1].y = scene->last_cactus_distance + 15.0f;
+            scene->last_cactus_distance = scene->cactuses[i].y;
+            generate_random_line_cactus(scene->cactuses[i], scene->cactuses[i + 1]);
         }
+        float y = scene->cactuses[i].y * -1;
+        float pos_x = 0;
+        if (scene->cactuses[i].x == 0.6f)
+        {
+            pos_x = 2.0f;
+        }
+        else if (scene->cactuses[i].x == 1.2f)
+        {
+            pos_x = 4.9f;
+        }
+        else if (scene->cactuses[i].x == 1.8f)
+        {
+            pos_x = 7.4f;
+        }
+        glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, scene->cactuses[i].texture_id);
+        glScalef(scene->cactuses[i].scale, scene->cactuses[i].scale, scene->cactuses[i].scale);
+        glRotatef(scene->cactuses[i].rotation, 1, 0, 0);
+        glTranslatef(pos_x, 0, y);
+        draw_model(&(scene->cactuses[i].model));
+        glPopMatrix();
     }
 }
-void draw_house(const Scene *scene)
+void draw_house(Scene *scene)
 {
-    float y = 800.0f;
-    for (int i = 0; i < 3; i++)
+    if (scene->house.y + 3.0f < scene->raptor.object.y / 2)
     {
-        glPushMatrix();
-        glBindTexture(GL_TEXTURE_2D, scene->houses[i].texture_id);
-        glRotatef(90, 1, 0, 0);
-        glRotatef(180, 0, 1, 0);
-        glScalef(scene->houses[i].scale, scene->houses[i].scale, scene->houses[i].scale);
-        glTranslatef(250.0f, 25.0f, y);
-        draw_model(&(scene->houses[i].model));
-        glPopMatrix();
-        y += 1000.0f;
+        scene->settings.speed += 0.2;
+        scene->house.y = scene->house.y + 20.0f;
     }
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D, scene->house.texture_id);
+    glTranslatef(-2.0f, scene->house.y, 0.1f);
+    glRotatef(90, 1, 0, 0);
+    glRotatef(180, 0, 1, 0);
+    glScalef(scene->house.scale, scene->house.scale, scene->house.scale);
+    draw_model(&(scene->house.model));
+    glPopMatrix();
 }
 void help(GLuint texture)
 {
@@ -333,24 +341,24 @@ void draw_desert(const Scene *scene)
     glBindTexture(GL_TEXTURE_2D, scene->desert_texture_id);
     glBegin(GL_QUADS);
     glPushMatrix();
-    for (int i = -2; i < 30; i++)
+    int start = scene->raptor.object.y / 2 - 3;
+    int end = scene->raptor.object.y / 2 + 9;
+    for (int i = start; i < end; i++)
     {
-        if (i > scene->raptor.object.y / 2 - 6.0f && i < scene->raptor.object.y / 2 + 6.0f)
+
+        for (int j = -5; j <= 5; j++)
         {
-            for (int j = -5; j <= 5; j++)
-            {
-                glTexCoord2f(0, 1);
-                glVertex3f(j, i, 0);
+            glTexCoord2f(0, 1);
+            glVertex3f(j, i, 0);
 
-                glTexCoord2f(1, 1);
-                glVertex3f(j + 1, i, 0);
+            glTexCoord2f(1, 1);
+            glVertex3f(j + 1, i, 0);
 
-                glTexCoord2f(1, 0);
-                glVertex3f(j + 1, i + 1, 0);
+            glTexCoord2f(1, 0);
+            glVertex3f(j + 1, i + 1, 0);
 
-                glTexCoord2f(0, 0);
-                glVertex3f(j, i + 1, 0);
-            }
+            glTexCoord2f(0, 0);
+            glVertex3f(j, i + 1, 0);
         }
     }
     glPopMatrix();
@@ -362,16 +370,19 @@ void draw_hearts(GLuint texture, int health)
     glDisable(GL_FOG);
     glEnable(GL_COLOR_MATERIAL);
     glDisable(GL_DEPTH_TEST);
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     glColor3f(1, 1, 1);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glBindTexture(GL_TEXTURE_2D, texture);
 
     for (int i = 0; i < health; i++)
     {
         glBegin(GL_QUADS);
+
         glTexCoord2f(0, 0);
         glVertex3d(0.2 / 2 + i / 2.0f, (1.375 / 2.0f) + 0.9f, -3);
         glTexCoord2f(1, 0);
@@ -382,6 +393,8 @@ void draw_hearts(GLuint texture, int health)
         glVertex3d(0.2 / 2 + i / 2.0f, (0.625 / 2.0f) + 0.9f, -3);
         glEnd();
     }
+
+    glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_COLOR_MATERIAL);
     glEnable(GL_LIGHTING);

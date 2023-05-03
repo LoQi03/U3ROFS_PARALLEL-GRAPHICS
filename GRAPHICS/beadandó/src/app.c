@@ -57,7 +57,7 @@ void init_opengl()
     glEnable(GL_NORMALIZE);
     glEnable(GL_AUTO_NORMAL);
 
-    glClearColor(0.2, 0.58, 0.92, 1.0);
+    glClearColor(0.2, 0.58, 0.92, 0.5);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
