@@ -112,14 +112,6 @@ void update_scene(Scene *scene)
         scene->raptor.object.y += scene->settings.speed * (scene->current_time - scene->last_time);
         scene->sun.rotation = scene->current_time * 180 / 3.14;
         scene->sun.y = scene->raptor.object.y / 2 + 6;
-        /* if (scene->raptor.object.y > 35.0)
-        {
-            scene->settings.speed *= 1.2;
-            generate_random_cactus(scene->cactuses);
-            scene->last_cactus_distance = scene->cactuses[11].y;
-            scene->raptor.object.y = -1.0;
-        }
-        */
         for (size_t i = 0; i <= 20; i++)
         {
             if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.05 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.05)

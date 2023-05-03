@@ -25,6 +25,7 @@ typedef struct Scene
     GLuint description_texture_id;
     GLuint game_over_texture_id;
     GLuint desert_texture_id;
+    GLuint display_list;
     float last_cactus_distance;
     int health;
     double current_time;
