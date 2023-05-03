@@ -4,26 +4,21 @@
 #include <time.h>
 int main(int argc, char *argv[])
 {
-    if (argc != 3)
+    if (argc != 4)
     {
         printf("Hibas bemenet!\n");
         return 1;
     }
     double x = strtod(argv[1], NULL); // pont, ahol a függvényeket kiértékeljük
-    int n = atoi(argv[2]);            // sorfejtés pontossága
+    int n = atoi(argv[2]);
+    int thread_count = atoi(argv[3]); // sorfejtés pontossága
     printf("pararell:\n");
-#pragma omp parallel
-    {
-#pragma omp sections
-        {
-#pragma omp section
-            cos_taylor(x, n);
-#pragma omp section
-            sin_taylor(x, n);
-#pragma omp section
-            exp_taylor(x, n);
-        }
-    }
+    printf("x=%f, n=%d, thread_count=%d\n", x, n, thread_count);
+
+    cos_taylor(x, n, thread_count);
+    sin_taylor(x, n, thread_count);
+    exp_taylor(x, n, thread_count);
+
     printf("szekvencialis:\n");
     seq_cos_taylor(x, n);
     seq_sin_taylor(x, n);

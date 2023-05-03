@@ -13,12 +13,11 @@ double factorial(int n)
     return result;
 }
 
-double cos_taylor(double x, int n)
+double cos_taylor(double x, int n, int thread_count)
 {
     clock_t start = clock();
     double result = 1.0;
-#pragma omp parallel for reduction(+ \
-                                   : result)
+#pragma omp parallel for num_threads(thread_count) reduction(+ : result)
     for (int i = 1; i <= n; i++)
     {
         double term = pow(-1, i) * pow(x, 2 * i) / factorial(2 * i);
@@ -28,12 +27,11 @@ double cos_taylor(double x, int n)
     return result;
 }
 
-double sin_taylor(double x, int n)
+double sin_taylor(double x, int n, int thread_count)
 {
     clock_t start = clock();
     double result = x;
-#pragma omp parallel for reduction(+ \
-                                   : result)
+#pragma omp parallel for num_threads(thread_count) reduction(+ : result)
     for (int i = 1; i <= n; i++)
     {
         double term = pow(-1, i) * pow(x, 2 * i + 1) / factorial(2 * i + 1);
@@ -43,12 +41,11 @@ double sin_taylor(double x, int n)
     return result;
 }
 
-double exp_taylor(double x, int n)
+double exp_taylor(double x, int n, int thread_count)
 {
     clock_t start = clock();
     double result = 1.0;
-#pragma omp parallel for reduction(+ \
-                                   : result)
+#pragma omp parallel for num_threads(thread_count) reduction(+ : result)
     for (int i = 1; i <= n; i++)
     {
         double term = pow(x, i) / factorial(i);
