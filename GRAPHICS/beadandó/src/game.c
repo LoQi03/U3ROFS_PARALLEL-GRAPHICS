@@ -28,9 +28,11 @@ void generate_random_cactus(GameObject *cactuses)
 }
 void init_cactuses(GameObject *cactuses)
 {
+    Model model;
+    load_model(&(model), "assets/models/cactus.obj");
     for (int i = 0; i < 30; i++)
     {
-        load_model(&(cactuses[i].model), "assets/models/cactus.obj");
+        cactuses[i].model = model;
         cactuses[i].texture_id = load_texture("assets/textures/cactus.jpg");
         cactuses[i].scale = 0.1;
         cactuses[i].rotation = 90.0;

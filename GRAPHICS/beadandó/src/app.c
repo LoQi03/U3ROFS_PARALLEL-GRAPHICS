@@ -118,6 +118,10 @@ void handle_app_events(App *app)
         case SDL_KEYDOWN:
             switch (event.key.keysym.scancode)
             {
+            case SDL_SCANCODE_SPACE:
+                if (app->scene.settings.is_over == true)
+                    init_scene(&(app->scene));
+                break;
             case SDL_SCANCODE_ESCAPE:
                 app->is_running = false;
                 break;
@@ -152,10 +156,10 @@ void handle_app_events(App *app)
                 else
                     set_camera_side_speed(&(app->camera), -1);
                 break;
-            case SDL_SCANCODE_J:
+            case SDL_SCANCODE_LEFT:
                 set_left_dino(&(app->scene));
                 break;
-            case SDL_SCANCODE_K:
+            case SDL_SCANCODE_RIGHT:
                 set_right_dino(&(app->scene));
                 break;
             case SDL_SCANCODE_L:
@@ -186,10 +190,10 @@ void handle_app_events(App *app)
                 else
                     set_camera_side_speed(&(app->camera), 0);
                 break;
-            case SDL_SCANCODE_J:
+            case SDL_SCANCODE_LEFT:
                 set_center_dino(&(app->scene));
                 break;
-            case SDL_SCANCODE_K:
+            case SDL_SCANCODE_RIGHT:
                 set_center_dino(&(app->scene));
                 break;
             default:

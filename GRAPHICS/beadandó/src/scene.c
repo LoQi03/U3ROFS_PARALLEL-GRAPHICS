@@ -3,8 +3,8 @@ void init_scene(Scene *scene)
 {
     scene->heart_texture_id = load_texture("assets/textures/heart.jpg");
     scene->description_texture_id = load_texture("assets/textures/descript.jpg");
+    scene->game_over_texture_id = load_texture("assets/textures/death.jpg");
     // raptor
-
     load_model(&(scene->raptor.object.model), "assets/models/raptor.obj");
     scene->raptor.object.texture_id = load_texture("assets/textures/raptor.png");
     scene->raptor.object.x = 1.20;
@@ -41,7 +41,7 @@ void init_scene(Scene *scene)
     init_material(&(scene->material));
 
     scene->settings.lock_camera = true;
-    scene->settings.lightingLevel = 1.0f;
+    scene->settings.lightingLevel = 2.8f;
     scene->settings.is_paused = false;
     scene->settings.speed = 1.2;
     scene->settings.is_over = false;
@@ -152,7 +152,7 @@ void render_scene(const Scene *scene)
     if (scene->settings.is_over)
     {
         glDisable(GL_LIGHTING);
-        game_over(scene->description_texture_id);
+        game_over(scene->game_over_texture_id);
     }
     else
     {
@@ -359,6 +359,7 @@ void draw_desert(const Scene *scene)
 void draw_hearts(GLuint texture, int health)
 {
     glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
     glEnable(GL_COLOR_MATERIAL);
     glDisable(GL_DEPTH_TEST);
 
@@ -384,4 +385,5 @@ void draw_hearts(GLuint texture, int health)
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_COLOR_MATERIAL);
     glEnable(GL_LIGHTING);
+    glEnable(GL_FOG);
 }

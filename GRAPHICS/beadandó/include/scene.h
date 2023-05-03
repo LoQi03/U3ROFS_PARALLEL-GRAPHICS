@@ -23,6 +23,7 @@ typedef struct Scene
     GameSettings settings;
     GLuint heart_texture_id;
     GLuint description_texture_id;
+    GLuint game_over_texture_id;
     GLuint desert_texture_id;
     int health;
     double current_time;
