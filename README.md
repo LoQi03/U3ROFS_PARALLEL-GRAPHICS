@@ -41,7 +41,7 @@ A program vár 2 paramétert: egy "n" értéket, és egy "threads_count" érték
     </tr>
 </table>
 
-!(./assets/beadando1.png)
+![alt text](./assets/beadando1.png "Grafikon")
 
 ### PARARELL/2.beadandó
 
