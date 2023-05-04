@@ -3,7 +3,7 @@
 #include <math.h>
 #include <time.h>
 #include "program.h"
-
+int *arr;
 void quickSort(int *arr, int left, int right)
 {
     int i = left, j = right;

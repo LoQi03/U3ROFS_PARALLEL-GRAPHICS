@@ -9,9 +9,9 @@ int main(int argc, char *argv[])
         printf("Hibas bemenet!\n");
         return 1;
     }
-    double x = strtod(argv[1], NULL); // pont, ahol a függvényeket kiértékeljük
+    double x = strtod(argv[1], NULL);
     int n = atoi(argv[2]);
-    int thread_count = atoi(argv[3]); // sorfejtés pontossága
+    int thread_count = atoi(argv[3]);
     printf("pararell:\n");
     printf("x=%f, n=%d, thread_count=%d\n", x, n, thread_count);
 

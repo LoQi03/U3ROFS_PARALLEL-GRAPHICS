@@ -2,13 +2,24 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include "program.h"
-int main()
+int main(int argc, char *argv[])
 {
-    int num_threads, i;
+    if (argc != 3)
+    {
+        printf("Hibas bemenet!\n");
+        return 1;
+    }
+    int N = atoi(argv[1]);
+    if (N > N_MAX)
+    {
+        printf("Tul nagy a tomb!\n");
+        return 1;
+    }
+    arr = (int *)malloc(N * sizeof(int));
+    int num_threads = atoi(argv[2]);
+    int i;
     pthread_t *threads;
     int *args;
-    printf("Add meg a szalak szamat: ");
-    scanf("%d", &num_threads);
     srand(time(NULL));
     for (int i = 0; i < N; i++)
     {
