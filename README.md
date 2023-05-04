@@ -163,7 +163,7 @@ AsPararell().OrderBy összevetése az OrdeBy-al
 AsPararell().Where összevetése a Where-el
 
 
-A mérési eredményt az aktuális lekérdezéskor írja ki a program. A programban egy gombbal tetszőlegesen állítható az aktuális lekérdezés, vagyis hogy a program párhuzamosan vagy szekvenciálisan hajtja végre a kérést, ennek eredményét is a gomb alatt írja ki.
+A mérési eredményt az aktuális lekérdezéskor írja ki a program. A programban egy gombbal tetszőlegesen állítható az aktuális lekérdezés, vagyis hogy a program párhuzamosan vagy szekvenciálisan hajtja végre a kérést, ennek mérési eredményét is a gomb alatt írja ki.
 
 # Grafika beadandó:
 
