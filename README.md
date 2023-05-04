@@ -4,34 +4,23 @@
 
 ### PARARELL/1.beadandó
 
-Téma: Quick Sort(tetszőleges szálon futó)
-Leírás: Generál N db számot, majd bekéri hogy hány szálon végezze el. Illetve lefut sekvenciálisan is.
+***Téma:*** Quick Sort
+***Leírás:***
+A program vár 2 paramétert: egy "n" értéket, és egy "threads_count" értéket. Az első bemeneti paraméter az, hogy mennyi számot generáljon a program, a második paraméter pedig az, hogy hány szálon végezze el az algoritmus. Az algoritmus a tömb elemeit résztömbökre osztja, majd a résztömbök elemeit összehasonlítja egy "pivot" értékkel, majd azokat a résztömböket rendezni, amelyekben az elemeik kisebbek vagy nagyobbak a pivotnál. A program ezen kívül tartalmaz egy párhuzamosított verziót is, amelyben a munkát több szál végzi el egyszerre.
 
-6-szálon lett tesztelve.
+ ***Futtatás:***   ./main {N} {threads_count}
 
-    |  Nums  | Pararell | Sequence |
-    |  99999 | 0.003000 | 0.006000 |
-    |  50000 | 0.003000 | 0.005000 |
-    | 150000 | 0.004000 | 0.010000 |
+ ***Mérések:*** 
 
 ### PARARELL/2.beadandó
 
-Téma: Taylor sorbafejtés
-Leírás: kiszámolja az exp,sin,cos értékeket több szálon, illetve a sorbafejtésnél az összeadást is több szálon végzi el.
+***Téma:*** Taylor sorbafejtés
+***Leírás:*** 
+A program vár három bemeneti paramétert: egy lebegőpontos "x" értéket, egy egész "n" értéket és egy egész "thread_count" értéket. Az első bemeneti paraméterre a cos, sin és exp függvények számítása során lesz szükség, a második bemeneti paraméter pedig meghatározza, hogy hány tagot kell számolni a Taylor sorozatokban. A harmadik bemeneti paraméter a párhuzamosított számítások száma, amelyeket a "cos_taylor", "sin_taylor" és "exp_taylor" függvényekben hajtanak végre.
 
-x=0.5 N=1000000
+ ***Futtatás:***   ./main {x} {n} {threads_count}
 
-    Pararell:
-    |   f  |    time   |
-    |  exp | 21.871000 |
-    |  cos | 44.134000 |
-    |  sin | 44.208000 |
-
-    Sequence:
-    |   f  |    time   |
-    |  exp | 21.923000 |
-    |  cos | 44.724000 |
-    |  sin | 46.850000 |
+ ***Mérések:*** 
 
 ### PARARELL/3.beadandó
 
