@@ -86,6 +86,8 @@ Szekvenciális:
     </tr>
 </table>
 
+
+
 6 szálon:
  <table>
     <tr>
@@ -144,18 +146,29 @@ Szekvenciális:
     </tr>
 </table>
 
+<strong>Összesítés:</strong>
+N=100000 esetén...
+
+![alt text](./assets/beadando2.png "Grafikon:")
+
 ### PARARELL/3.beadandó
 
-Téma: Order By, Search
-Leírás: Több szálon történő rendezés, illetve keresés. C# nelyven, blazor és ASP .Net segítségével.
+#### Téma: Order By, Search
+### Leírás:
+Több szálon történő rendezés, illetve keresés. C# nelyven, blazor és ASP .Net környezetben. Az adatokat a program indulásakor generálom.
+
+
 AsPararell().OrderBy összevetése az OrdeBy-al
+
 AsPararell().Where összevetése a Where-el
-Mérési eredmények a programban.
-Tetszőlegesen állítható a szekvenciális és a párhuzamos futás.
+
+
+A mérési eredményt az aktuális lekérdezéskor írja ki a program. A programban egy gombbal tetszőlegesen állítható az aktuális lekérdezés, vagyis hogy a program párhuzamosan vagy szekvenciálisan hajtja végre a kérést, ennek eredményét is a gomb alatt írja ki.
 
 ## Grafika beadandó:
 
 ### GRAPHICS/beadandó
 
-Téma:Dinós játék
-Leírás: Egy dinóval kell kikerülni a kaktuszokat a sivatagban. A játéknak vége ha a dinó meghal.
+### Téma:Dinós játék
+### Leírás: 
+Ez egy Endless runner game, amiben egy dinót irányítunk akinek át kell kelnie a sivatagon. A raptoron és a napon kívül minden objektum procedurálisan van generálva. Ahogy a raptorral elérünk egy házat a raptor sebessége megnő, így nehezíti meg a játékot.
