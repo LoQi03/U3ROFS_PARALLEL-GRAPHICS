@@ -13,10 +13,19 @@ A program vár 2 paramétert: egy "n" értéket, és egy "threads_count" érték
     ./main {N} {threads_count}
 
  #### Mérések:
- 
+
  <table>
     <tr>
-        <td>Foo</td>
+        <th>N</th>
+        <th>Szekvenciális(ms)</th>
+        <th>6 szálon</th>
+        <th>12 szálon</th>
+    <tr>
+    <tr>
+        <td>1000</td>
+        <td>1000</td>
+        <td>1000</td>
+        <td>1000</td>
     </tr>
 </table>
 
