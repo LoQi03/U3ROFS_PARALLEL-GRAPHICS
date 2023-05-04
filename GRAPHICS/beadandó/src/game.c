@@ -26,25 +26,25 @@ void generate_random_cactus(GameObject *cactuses)
         distance += 15.0f;
     }
 }
-void generate_random_line_cactus(GameObject cactus1, GameObject cactus2)
+void generate_random_line_cactus(GameObject *cactus1, GameObject *cactus2)
 {
     srand(time(NULL));
     for (int i = 0; i < 12; i += 2)
     {
         int r = (rand() % 3) + 1;
         if (r == 1)
-            cactus1.x = 0.6;
+            cactus1->x = 0.6;
         else if (r == 2)
-            cactus1.x = 1.8;
+            cactus1->x = 1.8;
         else if (r == 3)
-            cactus1.x = 1.2;
+            cactus1->x = 1.2;
         r = (rand() % 3) + 1;
         if (r == 1)
-            cactus2.x = 0.6;
+            cactus2->x = 0.6;
         else if (r == 2)
-            cactus2.x = 1.8;
+            cactus2->x = 1.8;
         else if (r == 3)
-            cactus2.x = 1.2;
+            cactus2->x = 1.2;
     }
 }
 void init_cactuses(GameObject *cactuses)

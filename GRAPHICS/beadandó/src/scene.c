@@ -112,9 +112,9 @@ void update_scene(Scene *scene)
         scene->raptor.object.y += scene->settings.speed * (scene->current_time - scene->last_time);
         scene->sun.rotation = scene->current_time * 180 / 3.14;
         scene->sun.y = scene->raptor.object.y / 2 + 6;
-        for (size_t i = 0; i <= 20; i++)
+        for (size_t i = 0; i < 12; i++)
         {
-            if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.05 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.05)
+            if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.04 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.04)
             {
                 if (scene->raptor.object.x == scene->cactuses[i].x)
                 {
@@ -239,7 +239,7 @@ void draw_cactus(Scene *scene)
             scene->cactuses[i].y = scene->last_cactus_distance + 15.0f;
             scene->cactuses[i + 1].y = scene->last_cactus_distance + 15.0f;
             scene->last_cactus_distance = scene->cactuses[i].y;
-            generate_random_line_cactus(scene->cactuses[i], scene->cactuses[i + 1]);
+            generate_random_line_cactus(&(scene->cactuses[i]), &(scene->cactuses[i + 1]));
         }
         float y = scene->cactuses[i].y * -1;
         float pos_x = 0;
