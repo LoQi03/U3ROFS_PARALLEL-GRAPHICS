@@ -173,6 +173,8 @@ A mérési eredményt az aktuális lekérdezéskor írja ki a program. A program
 ### Leírás: 
 Ez egy Endless runner game, amiben egy dinót irányítunk akinek át kell kelnie a sivatagon. A raptoron és a napon kívül minden objektum procedurálisan van generálva. Ahogy a raptorral elérünk egy házat a raptor sebessége megnő, így nehezíti meg a játékot.
 
+### Irányítás: 
+
 <kbd>-></kbd> - jobbra
 
 <kbd><-</kbd> - balra
