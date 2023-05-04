@@ -173,6 +173,18 @@ A mérési eredményt az aktuális lekérdezéskor írja ki a program. A program
 ### Leírás: 
 Ez egy Endless runner game, amiben egy dinót irányítunk akinek át kell kelnie a sivatagon. A raptoron és a napon kívül minden objektum procedurálisan van generálva. Ahogy a raptorral elérünk egy házat a raptor sebessége megnő, így nehezíti meg a játékot.
 
+<kbd>-></kbd> - jobbra
+
+<kbd><-</kbd> - balra
+
+<kbd>L</kbd> - kamera rögzítése
+
+<kbd>3</kbd> - fényerő növelése
+
+<kbd>4</kbd> - fényerő csökkentése
+
+<kbd>SPACE</kbd> - Játék újrakezdése
+
  #### Futtatás:
 
     ./dino_run
