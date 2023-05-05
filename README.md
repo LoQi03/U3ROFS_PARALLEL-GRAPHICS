@@ -1,8 +1,8 @@
-# U3ROFS PARARELL-GRAPHICS
+# U3ROFS PARALLEL-GRAPHICS
 
-# Pararell beadandók:
+# PARALLEL beadandók:
 
-## PARARELL/1.beadandó
+## PARALLEL/1.beadandó
 
 ### Téma: Quick Sort
 ### Leírás:
@@ -43,7 +43,7 @@ A program vár 2 paramétert: egy "n" értéket, és egy "threads_count" érték
 
 ![alt text](./assets/beadando1.png "Grafikon")
 
-## PARARELL/2.beadandó
+## PARALLEL/2.beadandó
 
 ### Téma: Taylor sorbafejtés
 ### Leírás:
