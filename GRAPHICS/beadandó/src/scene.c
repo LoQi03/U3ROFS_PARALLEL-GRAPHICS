@@ -44,7 +44,7 @@ void init_scene(Scene *scene)
     scene->settings.lock_camera = true;
     scene->settings.lightingLevel = 2.8f;
     scene->settings.is_paused = false;
-    scene->settings.speed = 1.2;
+    scene->settings.speed = 1.6;
     scene->settings.is_over = false;
 
     GLfloat fogColor[] = {0.2, 0.58, 0.92, 0.01};
@@ -114,7 +114,7 @@ void update_scene(Scene *scene)
         scene->sun.y = scene->raptor.object.y / 2 + 6;
         for (size_t i = 0; i < 12; i++)
         {
-            if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.04 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.04)
+            if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.06 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.06)
             {
                 if (scene->raptor.object.x == scene->cactuses[i].x)
                 {
