@@ -30,6 +30,7 @@ typedef struct Scene
     int health;
     double current_time;
     double last_time;
+    double elapsed_time;
     Material material;
 } Scene;
 

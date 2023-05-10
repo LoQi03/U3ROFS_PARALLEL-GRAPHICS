@@ -14,7 +14,7 @@ void init_scene(Scene *scene)
     scene->raptor.hp = 12.0f;
     scene->raptor.object.scale = 0.5;
     scene->health = 4;
-
+    scene->raptor.target_x = 1.2;
     // house
     load_model(&(scene->house.model), "assets/models/house.obj");
     scene->house.texture_id = load_texture("assets/textures/house.jpg");
@@ -112,11 +112,12 @@ void update_scene(Scene *scene)
         scene->raptor.object.y += scene->settings.speed * (scene->current_time - scene->last_time);
         scene->sun.rotation = scene->current_time * 180 / 3.14;
         scene->sun.y = scene->raptor.object.y / 2 + 6;
+        scene->raptor.object.x += (scene->raptor.target_x - scene->raptor.object.x) * (scene->current_time - scene->last_time) * 2;
         for (size_t i = 0; i < 12; i++)
         {
             if (scene->raptor.object.y > scene->cactuses[i].y / 5 - 0.06 && scene->raptor.object.y < scene->cactuses[i].y / 5 + 0.06)
             {
-                if (scene->raptor.object.x == scene->cactuses[i].x)
+                if (scene->raptor.target_x == scene->cactuses[i].x)
                 {
                     scene->raptor.hp -= 1.0;
                     printf("HP: %f\n", scene->raptor.hp);
@@ -162,6 +163,7 @@ void render_scene(const Scene *scene)
         {
             update_scene(scene);
             set_material(&(scene->material));
+
             draw_raptor(scene);
             draw_desert(scene);
             draw_house(scene);
@@ -173,15 +175,15 @@ void render_scene(const Scene *scene)
 }
 void set_left_dino(Scene *scene)
 {
-    scene->raptor.object.x = 0.6;
+    scene->raptor.target_x = 0.6;
 }
 void set_right_dino(Scene *scene)
 {
-    scene->raptor.object.x = 1.80;
+    scene->raptor.target_x = 1.8;
 }
 void set_center_dino(Scene *scene)
 {
-    scene->raptor.object.x = 1.20;
+    scene->raptor.target_x = 1.2;
 }
 void togle_camera_lock(Scene *scene)
 {

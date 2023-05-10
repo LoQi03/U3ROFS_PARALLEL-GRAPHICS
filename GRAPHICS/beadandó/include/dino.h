@@ -5,6 +5,7 @@
 typedef struct dino
 {
     GameObject object;
+    float target_x;
     float hp;
 } Dino;
 

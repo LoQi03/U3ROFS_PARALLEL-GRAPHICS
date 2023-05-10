@@ -240,7 +240,7 @@ void update_app(App *app)
     {
         float *pos = get_camera_position(&(app->scene));
         set_camera_position(&(app->camera), pos[0], pos[1], pos[2]);
-        update_camera(&(app->camera), current_time);
+        update_camera(&(app->camera), elapsed_time);
     }
     else
     {
