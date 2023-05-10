@@ -20,24 +20,35 @@ A program vár 2 paramétert: egy "n" értéket, és egy "threads_count" érték
         <th>Szekvenciális(ms)</th>
         <th>6 szálon(ms)</th>
         <th>12 szálon(ms)</th>
+        <th>18 szálon(ms)</th>
     <tr>
     <tr>
         <td>10000</td>
         <td>0.001000</td>
         <td>0.001000</td>
         <td>0.004000</td>
+        <td>0.002000</td>
     </tr>
      <tr>
         <td>100000</td>
         <td>0.006000</td>
         <td>0.002000</td>
         <td>0.002000</td>
+        <td>0.004000</td>
     </tr>
     <tr>
         <td>150000</td>
         <td>0.009000</td>
         <td>0.003000</td>
         <td>0.003000</td>
+        <td>0.009000</td>
+    </tr>
+        <tr>
+        <td>1500000</td>
+        <td>0.009000</td>
+        <td>0.003000</td>
+        <td>0.003000</td>
+        <td>0.009000</td>
     </tr>
 </table>
 
