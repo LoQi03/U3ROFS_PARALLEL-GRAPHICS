@@ -31,6 +31,8 @@ typedef struct Scene
     double current_time;
     double last_time;
     double elapsed_time;
+    float fogColor[4];
+    float fogColorChangedTime;
     Material material;
 } Scene;
 

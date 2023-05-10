@@ -1,4 +1,6 @@
 #include "scene.h"
+
+GLuint displayList;
 void init_scene(Scene *scene)
 {
     scene->heart_texture_id = load_texture("assets/textures/heart.jpg");
@@ -15,6 +17,7 @@ void init_scene(Scene *scene)
     scene->raptor.object.scale = 0.5;
     scene->health = 4;
     scene->raptor.target_x = 1.2;
+    scene->raptor.object.rotation = 180.0;
     // house
     load_model(&(scene->house.model), "assets/models/house.obj");
     scene->house.texture_id = load_texture("assets/textures/house.jpg");
@@ -44,13 +47,16 @@ void init_scene(Scene *scene)
     scene->settings.lock_camera = true;
     scene->settings.lightingLevel = 2.8f;
     scene->settings.is_paused = false;
-    scene->settings.speed = 1.2;
+    scene->settings.speed = 1.5;
     scene->settings.is_over = false;
 
-    GLfloat fogColor[] = {0.2, 0.58, 0.92, 0.01};
+    scene->fogColor[0] = 0.2;
+    scene->fogColor[1] = 0.58;
+    scene->fogColor[2] = 0.92;
+    scene->fogColor[3] = 0.01;
     glEnable(GL_FOG);
     glFogf(GL_FOG_DENSITY, 0.40f);
-    glFogfv(GL_FOG_COLOR, fogColor);
+    glFogfv(GL_FOG_COLOR, scene->fogColor);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 }
@@ -119,6 +125,12 @@ void update_scene(Scene *scene)
             {
                 if (scene->raptor.target_x == scene->cactuses[i].x)
                 {
+                    scene->fogColor[0] = 0.7;
+                    scene->fogColor[1] = 0.2;
+                    scene->fogColor[2] = 0.2;
+                    scene->fogColor[3] = 0.01;
+                    glFogfv(GL_FOG_COLOR, scene->fogColor);
+                    scene->fogColorChangedTime = scene->current_time;
                     scene->raptor.hp -= 1.0;
                     printf("HP: %f\n", scene->raptor.hp);
                     if (scene->raptor.hp < 12.0)
@@ -141,8 +153,32 @@ void update_scene(Scene *scene)
                 }
             }
         }
+        if (scene->fogColor[0] == 0.7f && scene->current_time - scene->fogColorChangedTime > 0.5f)
+        {
+            scene->fogColor[0] = 0.2;
+            scene->fogColor[1] = 0.58;
+            scene->fogColor[2] = 0.92;
+            scene->fogColor[3] = 0.01;
+            glFogfv(GL_FOG_COLOR, scene->fogColor);
+        }
+
         scene->last_time = scene->current_time;
     }
+}
+
+void init_display_list(const Scene *scene)
+{
+    displayList = glGenLists(1);
+    glNewList(displayList, GL_COMPILE);
+
+    draw_raptor(scene);
+    draw_desert(scene);
+    draw_house(scene);
+    draw_cactus(scene);
+    draw_sun(scene);
+    draw_hearts(scene->heart_texture_id, scene->health);
+
+    glEndList();
 }
 
 void render_scene(const Scene *scene)
