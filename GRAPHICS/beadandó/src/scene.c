@@ -44,7 +44,7 @@ void init_scene(Scene *scene)
     scene->settings.lock_camera = true;
     scene->settings.lightingLevel = 2.8f;
     scene->settings.is_paused = false;
-    scene->settings.speed = 1.6;
+    scene->settings.speed = 1.2;
     scene->settings.is_over = false;
 
     GLfloat fogColor[] = {0.2, 0.58, 0.92, 0.01};
