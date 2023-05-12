@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 typedef struct Scene
 {
     Dino raptor;
@@ -34,6 +36,9 @@ typedef struct Scene
     float fogColor[4];
     float fogColorChangedTime;
     Material material;
+    Mix_Chunk *collisionSound;
+    SDL_Renderer *renderer;
+    TTF_Font *font;
 } Scene;
 
 void set_lighting(float lightingLevel, float x, float y, float z);
@@ -51,7 +56,6 @@ void update_scene(Scene *scene);
  * Render the scene objects.
  */
 void render_scene(const Scene *scene);
-
 /**
  * Draw objects.
  */

@@ -6,7 +6,10 @@
 #include <obj/model.h>
 #include <time.h>
 #include "utils.h"
+#include <SDL2/SDL.h>
 
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 typedef struct GameObject
 {
     Model model;
@@ -30,4 +33,5 @@ void generate_random_cactus(GameObject *cactuses);
 void init_cactuses(GameObject *cactuses);
 void init_material(Material *material);
 void generate_random_line_cactus(GameObject *cactus1, GameObject *cactus2);
+void display_score(SDL_Window *window);
 #endif /* GAME_H */

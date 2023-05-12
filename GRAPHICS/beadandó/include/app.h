@@ -6,7 +6,10 @@
 
 #include <SDL2/SDL.h>
 
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
+#include "game.h"
 
 #define VIEWPORT_RATIO (4.0 / 3.0)
 #define VIEWPORT_ASPECT 50.0
@@ -30,6 +33,8 @@ void init_app(App *app, int width, int height);
  * Initialize the OpenGL context.
  */
 void init_opengl();
+
+void init_audio();
 
 /**
  * Reshape the window.

@@ -1,7 +1,4 @@
 #include "app.h"
-
-#include <SDL2/SDL_image.h>
-
 void init_app(App *app, int width, int height)
 {
     int error_code;
@@ -26,7 +23,6 @@ void init_app(App *app, int width, int height)
         printf("[ERROR] Unable to create the application window!\n");
         return;
     }
-
     inited_loaders = IMG_Init(IMG_INIT_PNG);
     if (inited_loaders == 0)
     {
@@ -42,11 +38,12 @@ void init_app(App *app, int width, int height)
     }
 
     init_opengl();
+    init_audio();
+    SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
     reshape(width, height);
-
     init_camera(&(app->camera));
     init_scene(&(app->scene));
-
     app->is_running = true;
 }
 
@@ -101,7 +98,13 @@ void reshape(GLsizei width, GLsizei height)
         -.06, .06,
         .1, 10);
 }
-
+void init_audio()
+{
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    {
+        printf("SDL_mixer could not initialize! Error: %s\n", Mix_GetError());
+    }
+}
 void handle_app_events(App *app)
 {
     SDL_Event event;
@@ -235,7 +238,6 @@ void update_app(App *app)
     current_time = (double)SDL_GetTicks() / 1000;
     elapsed_time = current_time - app->uptime;
     app->uptime = current_time;
-
     if (is_camera_locked(&(app->scene)))
     {
         float *pos = get_camera_position(&(app->scene));
@@ -246,7 +248,6 @@ void update_app(App *app)
     {
         update_camera(&(app->camera), elapsed_time);
     }
-
     update_scene(&(app->scene));
 }
 
@@ -264,7 +265,6 @@ void render_app(App *app)
     {
         show_texture_preview();
     }
-
     SDL_GL_SwapWindow(app->window);
 }
 

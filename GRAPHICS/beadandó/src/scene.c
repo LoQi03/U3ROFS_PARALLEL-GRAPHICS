@@ -3,6 +3,14 @@
 GLuint displayList;
 void init_scene(Scene *scene)
 {
+    Mix_Chunk *collisionSound = Mix_LoadWAV("assets/audio/hit.mp3");
+    if (collisionSound == NULL)
+    {
+        printf("Failed to load sound effect! Error: %s\n", Mix_GetError());
+    }
+    scene->collisionSound = collisionSound;
+
+    scene->font = TTF_OpenFont("assets/font/Minecraft.ttf", 24);
     scene->heart_texture_id = load_texture("assets/textures/heart.jpg");
     scene->description_texture_id = load_texture("assets/textures/descript.jpg");
     scene->game_over_texture_id = load_texture("assets/textures/death.jpg");
@@ -125,6 +133,7 @@ void update_scene(Scene *scene)
             {
                 if (scene->raptor.target_x == scene->cactuses[i].x)
                 {
+                    Mix_PlayChannel(-1, scene->collisionSound, 0);
                     scene->fogColor[0] = 0.7;
                     scene->fogColor[1] = 0.2;
                     scene->fogColor[2] = 0.2;
