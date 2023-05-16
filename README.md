@@ -224,7 +224,7 @@ N=100000 esetén...
 
 ### Téma: Order By, Search
 ### Leírás:
-Több szálon történő rendezés, illetve keresés. C# nelyven, blazor és ASP .Net környezetben. Az adatokat a program indulásakor generálom.
+Több szálon történő rendezés, illetve keresés. C# nelyven, Windows és .Net környezetben. Az adatokat a program indulásakor generálom.
 
 
 AsPararell().OrderBy összevetése az OrdeBy-al

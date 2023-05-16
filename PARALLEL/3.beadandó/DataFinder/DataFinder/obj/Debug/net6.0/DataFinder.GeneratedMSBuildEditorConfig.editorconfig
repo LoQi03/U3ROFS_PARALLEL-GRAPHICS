@@ -9,29 +9,29 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = browser
 build_property.RootNamespace = DataFinder
 build_property.RootNamespace = DataFinder
-build_property.ProjectDir = d:\Repos\U3ROFS_PARARELL-GRAPHICS\PARARELL\3.beadandó\DataFinder\DataFinder\
+build_property.ProjectDir = D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó\DataFinder\DataFinder\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = d:\Repos\U3ROFS_PARARELL-GRAPHICS\PARARELL\3.beadandó\DataFinder\DataFinder
+build_property.MSBuildProjectDirectory = D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó\DataFinder\DataFinder
 build_property._RazorSourceGeneratorDebug = 
 
-[d:/Repos/U3ROFS_PARARELL-GRAPHICS/PARARELL/3.beadandó/DataFinder/DataFinder/App.razor]
+[D:/Repos/U3ROFS_PARARELL-GRAPHICS/PARALLEL/3.beadandó/DataFinder/DataFinder/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Repos/U3ROFS_PARARELL-GRAPHICS/PARARELL/3.beadandó/DataFinder/DataFinder/Pages/Index.razor]
+[D:/Repos/U3ROFS_PARARELL-GRAPHICS/PARALLEL/3.beadandó/DataFinder/DataFinder/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Repos/U3ROFS_PARARELL-GRAPHICS/PARARELL/3.beadandó/DataFinder/DataFinder/Shared/SurveyPrompt.razor]
+[D:/Repos/U3ROFS_PARARELL-GRAPHICS/PARALLEL/3.beadandó/DataFinder/DataFinder/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Repos/U3ROFS_PARARELL-GRAPHICS/PARARELL/3.beadandó/DataFinder/DataFinder/_Imports.razor]
+[D:/Repos/U3ROFS_PARARELL-GRAPHICS/PARALLEL/3.beadandó/DataFinder/DataFinder/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Repos/U3ROFS_PARARELL-GRAPHICS/PARARELL/3.beadandó/DataFinder/DataFinder/Shared/MainLayout.razor]
+[D:/Repos/U3ROFS_PARARELL-GRAPHICS/PARALLEL/3.beadandó/DataFinder/DataFinder/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-dz86brmc45

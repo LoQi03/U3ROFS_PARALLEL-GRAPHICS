@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZRX8HPd7TpjszvAAS0ae9LR7K+UIiGz8tzH2DrUGzzyHgsag13OVf8PJlKmhHg/Wt4iiMvXiP8qxNPHd6hSWqA==",
+  "dgSpecHash": "3lOX3w+6c2X+i5sxmBhM2uR5GD/N0vAOO92AuIhZlEssm05OSnoJfbiuUGbGIOw9enj9ONnQsw4nofFRCo8Slw==",
   "success": true,
-  "projectFilePath": "D:\\Repos\\U3ROFS_PARARELL-GRAPHICS\\PARARELL\\3.beadandó\\DataFinder\\DataFinder\\DataFinder.csproj",
+  "projectFilePath": "D:\\Repos\\U3ROFS_PARARELL-GRAPHICS\\PARALLEL\\3.beadandó\\DataFinder\\DataFinder\\DataFinder.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Máté\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.11\\microsoft.aspnetcore.authorization.6.0.11.nupkg.sha512",
     "C:\\Users\\Máté\\.nuget\\packages\\microsoft.aspnetcore.components\\6.0.11\\microsoft.aspnetcore.components.6.0.11.nupkg.sha512",

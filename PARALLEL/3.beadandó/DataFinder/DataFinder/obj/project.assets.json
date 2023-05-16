@@ -1767,11 +1767,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Repos\\U3ROFS_PARARELL-GRAPHICS\\PARARELL\\3.beadandó\\DataFinder\\DataFinder\\DataFinder.csproj",
+      "projectUniqueName": "D:\\Repos\\U3ROFS_PARARELL-GRAPHICS\\PARALLEL\\3.beadandó\\DataFinder\\DataFinder\\DataFinder.csproj",
       "projectName": "DataFinder",
-      "projectPath": "D:\\Repos\\U3ROFS_PARARELL-GRAPHICS\\PARARELL\\3.beadandó\\DataFinder\\DataFinder\\DataFinder.csproj",
+      "projectPath": "D:\\Repos\\U3ROFS_PARARELL-GRAPHICS\\PARALLEL\\3.beadandó\\DataFinder\\DataFinder\\DataFinder.csproj",
       "packagesPath": "C:\\Users\\Máté\\.nuget\\packages\\",
-      "outputPath": "D:\\Repos\\U3ROFS_PARARELL-GRAPHICS\\PARARELL\\3.beadandó\\DataFinder\\DataFinder\\obj\\",
+      "outputPath": "D:\\Repos\\U3ROFS_PARARELL-GRAPHICS\\PARALLEL\\3.beadandó\\DataFinder\\DataFinder\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Máté\\AppData\\Roaming\\NuGet\\NuGet.Config",

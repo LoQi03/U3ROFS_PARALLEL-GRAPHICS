@@ -77,7 +77,7 @@
         else
             return "Budapest";
     }
-    private List<DataModel> DataList = Enumerable.Range(0, 6000).Select(x => new DataModel
+    private List<DataModel> DataList = Enumerable.Range(0, 100000).Select(x => new DataModel
             {
                 Age = _random.Next(1, 100),
                 Name = Guid.NewGuid().ToString().Split('-').First(),

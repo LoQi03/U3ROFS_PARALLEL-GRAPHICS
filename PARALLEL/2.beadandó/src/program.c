@@ -3,6 +3,7 @@
 #include "program.h"
 #include <math.h>
 #include <time.h>
+
 double factorial(int n)
 {
     double result = 1.0;

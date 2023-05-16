@@ -1,0 +1,11 @@
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\bin\Debug\3.beadandó(Windows).exe.config
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\bin\Debug\3.beadandó(Windows).exe
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\bin\Debug\3.beadandó(Windows).pdb
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\obj\Debug\3.beadandó(Windows).csproj.AssemblyReference.cache
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\obj\Debug\3.beadandó(Windows).csproj.SuggestedBindingRedirects.cache
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\obj\Debug\_3.beadandó_Windows_.Form1.resources
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\obj\Debug\_3.beadandó_Windows_.Properties.Resources.resources
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\obj\Debug\3.beadandó(Windows).csproj.GenerateResource.cache
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\obj\Debug\3.beadandó(Windows).csproj.CoreCompileInputs.cache
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\obj\Debug\3.beadandó(Windows).exe
+D:\Repos\U3ROFS_PARARELL-GRAPHICS\PARALLEL\3.beadandó(Windows)\obj\Debug\3.beadandó(Windows).pdb
