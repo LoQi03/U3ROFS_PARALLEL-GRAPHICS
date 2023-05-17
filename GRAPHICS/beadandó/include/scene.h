@@ -37,8 +37,9 @@ typedef struct Scene
     float fogColorChangedTime;
     Material material;
     Mix_Chunk *collisionSound;
-    SDL_Renderer *renderer;
-    TTF_Font *font;
+    bool isSound;
+    float sound_time;
+
 } Scene;
 
 void set_lighting(float lightingLevel, float x, float y, float z);

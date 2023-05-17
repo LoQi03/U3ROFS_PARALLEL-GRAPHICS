@@ -9,8 +9,7 @@ void init_scene(Scene *scene)
         printf("Failed to load sound effect! Error: %s\n", Mix_GetError());
     }
     scene->collisionSound = collisionSound;
-
-    scene->font = TTF_OpenFont("assets/font/Minecraft.ttf", 24);
+    scene->isSound = true;
     scene->heart_texture_id = load_texture("assets/textures/heart.jpg");
     scene->description_texture_id = load_texture("assets/textures/descript.jpg");
     scene->game_over_texture_id = load_texture("assets/textures/death.jpg");
@@ -21,7 +20,7 @@ void init_scene(Scene *scene)
     scene->raptor.object.y = -3.0;
     scene->raptor.object.z = 0.0;
     scene->raptor.object.rotation = 0.0;
-    scene->raptor.hp = 12.0f;
+    scene->raptor.hp = 4.0f;
     scene->raptor.object.scale = 0.5;
     scene->health = 4;
     scene->raptor.target_x = 1.2;
@@ -133,31 +132,41 @@ void update_scene(Scene *scene)
             {
                 if (scene->raptor.target_x == scene->cactuses[i].x)
                 {
-                    Mix_PlayChannel(-1, scene->collisionSound, 0);
-                    scene->fogColor[0] = 0.7;
-                    scene->fogColor[1] = 0.2;
-                    scene->fogColor[2] = 0.2;
-                    scene->fogColor[3] = 0.01;
-                    glFogfv(GL_FOG_COLOR, scene->fogColor);
-                    scene->fogColorChangedTime = scene->current_time;
-                    scene->raptor.hp -= 1.0;
-                    printf("HP: %f\n", scene->raptor.hp);
-                    if (scene->raptor.hp < 12.0)
+                    if (scene->isSound == true)
                     {
-                        scene->health = 3;
+                        scene->isSound = false;
+                        Mix_PlayChannel(-1, scene->collisionSound, 0);
+                        scene->fogColor[0] = 0.7;
+                        scene->fogColor[1] = 0.2;
+                        scene->fogColor[2] = 0.2;
+                        scene->fogColor[3] = 0.01;
+                        glFogfv(GL_FOG_COLOR, scene->fogColor);
+                        scene->fogColorChangedTime = scene->current_time;
+                        scene->raptor.hp -= 1.0;
+                        printf("HP: %f\n", scene->raptor.hp);
+                        if (scene->raptor.hp < 4.0)
+                        {
+                            scene->health = 3;
+                        }
+                        if (scene->raptor.hp < 3.0)
+                        {
+                            scene->health = 2;
+                        }
+                        if (scene->raptor.hp < 2.0)
+                        {
+                            scene->health = 1;
+                        }
+                        if (scene->raptor.hp < 1)
+                        {
+                            scene->health = 0;
+                            scene->settings.is_over = true;
+                        }
+                        scene->sound_time = scene->current_time;
                     }
-                    if (scene->raptor.hp < 8.0)
+                    if (scene->sound_time + 0.5 < scene->current_time)
                     {
-                        scene->health = 2;
-                    }
-                    if (scene->raptor.hp < 4.0)
-                    {
-                        scene->health = 1;
-                    }
-                    if (scene->raptor.hp < 0)
-                    {
-                        scene->health = 0;
-                        scene->settings.is_over = true;
+                        scene->isSound = true;
+                        printf("sound time:%lf,current time: %lf", scene->sound_time, scene->current_time);
                     }
                 }
             }
