@@ -157,35 +157,6 @@ Szekvenciális:
     </tr>
 </table>
 
-12 szálon:
- <table>
-    <tr>
-        <th>N</th>
-        <th>cos</th>
-        <th>sin</th>
-        <th>exp</th>
-    <tr>
-    <tr>
-        <td>1000</td>
-        <td>0.002000</td>
-        <td>0.001000</td>
-        <td>0.001000</td>
-    </tr>
-        <tr>
-        <td>10000</td>
-        <td>0.063000</td>
-        <td>0.061000</td>
-        <td>0.031000</td>
-    </tr>
-    </tr>
-        <tr>
-        <td>100000</td>
-        <td>6.230000</td>
-        <td>6.244000</td>
-        <td>3.132000</td>
-    </tr>
-</table>
-
 18 szálon:
  <table>
     <tr>
